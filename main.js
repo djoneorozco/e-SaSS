@@ -68,15 +68,22 @@ Use advanced insight based on the tone, audience, and purpose.
 `;
 
     try {
-      // Replace with actual OpenAI call when ready
-      const gptResponse = await fakeOpenAI(prompt);
+      // 🔥 Live OpenAI integration via Netlify
+      const response = await fetch("/.netlify/functions/generateEmail", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+      });
 
-      // Render output
-      output.innerHTML = `<pre>${gptResponse}</pre>`;
+      const data = await response.json();
+      if (!data || !data.result) throw new Error("Empty OpenAI response");
+
+      // ✅ Render Output
+      output.innerHTML = `<pre>${data.result}</pre>`;
       outputWrapper.style.display = "block";
       progress.innerText = "✨ Your smart email is ready!";
 
-      // Lens Breakdown if enabled
+      // 🎯 Lens Breakdown
       if (useLenses) {
         lensResults.innerHTML = `
           <div class="lens-breakdown">
@@ -95,12 +102,3 @@ Use advanced insight based on the tone, audience, and purpose.
     }
   });
 });
-
-// Simulated OpenAI call — replace this with actual integration
-async function fakeOpenAI(prompt) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(`--- EMAIL SCRIPT A ---\nDear [Client],\nWe’re excited to introduce you to your new home opportunity...\n\n--- EMAIL SCRIPT B ---\nHi [Buyer],\nHope you're doing great! Wanted to share an exciting new listing...\n\n🔍 Tone Strategy: Used warmth, clarity, and positioning based on tone level\n💬 Persuasion Tactic: Tailored language to match buyer expectations`);
-    }, 1800);
-  });
-}
