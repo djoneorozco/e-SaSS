@@ -1,1 +1,105 @@
+<!-- =========================
+  index.html — e-SaSS
+  ========================= -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>e-SaSS – AI Email Assistant</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="glow-wrapper">
+    <div class="quiz-container">
+      <h1>e-SaSS</h1>
+      <p class="tagline">Your A.I. email assistant — tuned to your tone, powered by real insight</p>
 
+      <form id="emailForm" enctype="multipart/form-data">
+        <label>
+          1. What’s the purpose of your message?
+          <select name="purpose" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="Inform">Inform</option>
+            <option value="Persuade">Persuade</option>
+            <option value="Apologize">Apologize</option>
+            <option value="Connect">Connect</option>
+            <option value="Friendly">Friendly</option>
+          </select>
+        </label>
+
+        <label>
+          2. Who is the message for?
+          <select name="audience" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="Client">Client</option>
+            <option value="Buyer">Buyer</option>
+            <option value="Seller">Seller</option>
+            <option value="Friend">Friend</option>
+            <option value="New Lead">New Lead</option>
+          </select>
+        </label>
+
+        <label>
+          3. Desired Tone (SaSS Level): <span id="sassVal">5</span>
+          <input type="range" name="sassLevel" id="sassSlider" min="1" max="10" value="5"/>
+        </label>
+
+        <label>
+          4. Friendliness: <span id="friendlyVal">5</span>
+          <input type="range" name="friendliness" id="friendlySlider" min="1" max="10" value="5"/>
+        </label>
+
+        <label>
+          5. Psychology Lens Depth: <span id="psychVal">5</span>
+          <input type="range" name="psychology" id="psychSlider" min="1" max="10" value="5"/>
+        </label>
+
+        <label>
+          6. Business Lens Depth: <span id="bizVal">5</span>
+          <input type="range" name="business" id="bizSlider" min="1" max="10" value="5"/>
+        </label>
+
+        <label>
+          7. Insight Lens Depth: <span id="insightVal">5</span>
+          <input type="range" name="insight" id="insightSlider" min="1" max="10" value="5"/>
+        </label>
+
+        <label>
+          8. Quick Summary or Upload for Context:
+          <textarea name="contextText" placeholder="Explain situation or upload file below..." rows="4"></textarea>
+        </label>
+
+        <label>
+          Upload Optional File (image, email, PDF):
+          <input type="file" name="contextFile" accept=".png,.jpg,.jpeg,.pdf,.txt,.doc,.docx"/>
+        </label>
+
+        <button type="submit">Generate Email</button>
+      </form>
+
+      <div class="progress">Built by RealtySaSS – Let’s do it, A.I. Style.</div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    // Live update slider values
+    const sliders = [
+      { id: 'sassSlider', valId: 'sassVal' },
+      { id: 'friendlySlider', valId: 'friendlyVal' },
+      { id: 'psychSlider', valId: 'psychVal' },
+      { id: 'bizSlider', valId: 'bizVal' },
+      { id: 'insightSlider', valId: 'insightVal' }
+    ];
+
+    sliders.forEach(slider => {
+      const input = document.getElementById(slider.id);
+      const output = document.getElementById(slider.valId);
+      input.addEventListener('input', () => {
+        output.textContent = input.value;
+      });
+    });
+  </script>
+</body>
+</html>
