@@ -1,6 +1,5 @@
 // ================================
-// # generateEmail.js — Netlify Function
-// # OpenAI Integration | Ivy-Grade Quality
+// # generateEmail.js — Netlify Function Debug
 // ================================
 const { Configuration, OpenAIApi } = require("openai");
 
@@ -9,8 +8,6 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body);
     const prompt = body.prompt;
 
-    console.log("📩 Incoming prompt:", prompt); // Debug log
-
     if (!prompt) {
       return {
         statusCode: 400,
@@ -18,9 +15,19 @@ exports.handler = async (event) => {
       };
     }
 
+    console.log("🧠 Received prompt:", prompt);
+
     const configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
     });
+
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("❌ No OpenAI API key found in environment!");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "OpenAI API key missing" }),
+      };
+    }
 
     const openai = new OpenAIApi(configuration);
 
@@ -41,16 +48,12 @@ exports.handler = async (event) => {
       max_tokens: 1000,
     });
 
-    console.log("✅ OpenAI raw response:", JSON.stringify(completion.data)); // Debug log
+    console.log("✅ OpenAI raw response:", completion.data);
 
     const aiText = completion.data.choices[0]?.message?.content || "";
 
     if (!aiText) {
-      console.warn("⚠️ Empty response from OpenAI");
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Empty OpenAI response" }),
-      };
+      throw new Error("OpenAI returned an empty message content");
     }
 
     return {
@@ -61,11 +64,7 @@ exports.handler = async (event) => {
     console.error("❌ OpenAI function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: "Server error",
-        detail: err.message,
-        stack: err.stack,
-      }),
+      body: JSON.stringify({ error: "Server error", detail: err.message }),
     };
   }
 };
