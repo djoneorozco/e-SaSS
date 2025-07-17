@@ -1,0 +1,163 @@
+//# ================================
+//# style.css — e-SaSS, House of SaSS Edition
+//# ================================
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/*#1 — Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f8f9fc, #edf0f5);
+  color: #222;
+  line-height: 1.6;
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/*#2 — Glow Wrapper */
+.glow-wrapper {
+  width: 100%;
+  max-width: 720px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/*#3 — Header + Tagline */
+.quiz-container h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #121212;
+  margin-bottom: 0.5rem;
+}
+
+.tagline {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #5a5a5a;
+  margin-bottom: 2rem;
+}
+
+/*#4 — Form Layout */
+form label {
+  display: block;
+  margin-top: 1.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  background-color: #fafafa;
+  transition: border 0.2s ease;
+}
+
+form input[type="text"]:focus,
+form textarea:focus {
+  border-color: #3f5efb;
+  outline: none;
+}
+
+form input[type="file"] {
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+  background: #fafafa;
+  padding: 0.3rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/*#5 — Sliders */
+form input[type="range"] {
+  width: 100%;
+  margin-top: 0.4rem;
+  -webkit-appearance: none;
+  height: 6px;
+  background: #ddd;
+  border-radius: 10px;
+  outline: none;
+  transition: background 0.2s;
+}
+
+form input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: #3f5efb;
+  cursor: pointer;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  transition: transform 0.2s;
+}
+
+form input[type="range"]:hover::-webkit-slider-thumb {
+  transform: scale(1.1);
+}
+
+/*#6 — Button */
+form button {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  background: linear-gradient(to right, #3f5efb, #6a82fb);
+  border: none;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+form button:hover {
+  background: linear-gradient(to right, #2e4de0, #5e74e8);
+}
+
+/*#7 — Progress Bar */
+.progress {
+  margin-top: 2rem;
+  height: 6px;
+  width: 100%;
+  background-color: #eaeaea;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: #3f5efb;
+  animation: loadingBar 2s linear infinite;
+}
+
+@keyframes loadingBar {
+  0% { width: 0%; }
+  50% { width: 100%; }
+  100% { width: 0%; }
+}

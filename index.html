@@ -1,0 +1,82 @@
+<!--
+=========================================
+# e-SaSS — Smart Email Generator (2035 UX)
+# Fortune 500 Polished | Ivy 2.99 Activated
+# Built by RealtySaSS — Let’s do it, A.I. Style.
+=========================================
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>e-SaSS — A.I. Email Assistant</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="glow-wrapper">
+    <div class="quiz-container">
+
+      <h1 class="site-title">e-SaSS</h1>
+      <p class="tagline">Your A.I. email assistant — tuned to your tone, powered by real insight.</p>
+
+      <form id="eSaSSForm">
+
+        <!-- Primary Info Section -->
+        <div class="form-section">
+          <label for="purpose">1. What’s the purpose of your message?</label>
+          <input type="text" id="purpose" name="purpose" placeholder="e.g., Apologize, Persuade, Inform..." required />
+
+          <label for="audience">2. Who is the message for?</label>
+          <input type="text" id="audience" name="audience" placeholder="e.g., Buyer, Client, Partner..." required />
+
+          <label for="sassLevel">3. Desired Tone (SaSS Level): <span id="sassValue">5</span></label>
+          <input type="range" id="sassLevel" name="sassLevel" min="1" max="10" value="5" oninput="sassValue.innerText = this.value" />
+
+          <label for="friendliness">4. Friendliness: <span id="friendValue">5</span></label>
+          <input type="range" id="friendliness" name="friendliness" min="1" max="10" value="5" oninput="friendValue.innerText = this.value" />
+        </div>
+
+        <!-- Insight Sliders Section -->
+        <div class="form-section">
+          <h2>Lens Depth Controls</h2>
+
+          <label for="psychology">5. Psychology Lens Depth: <span id="psychValue">5</span></label>
+          <input type="range" id="psychology" name="psychology" min="1" max="10" value="5" oninput="psychValue.innerText = this.value" />
+
+          <label for="business">6. Business Lens Depth: <span id="bizValue">5</span></label>
+          <input type="range" id="business" name="business" min="1" max="10" value="5" oninput="bizValue.innerText = this.value" />
+
+          <label for="technical">7. Insight Lens Depth: <span id="techValue">5</span></label>
+          <input type="range" id="technical" name="technical" min="1" max="10" value="5" oninput="techValue.innerText = this.value" />
+        </div>
+
+        <!-- Context + Upload -->
+        <div class="form-section">
+          <label for="background">8. Quick Summary or Upload for Context:</label>
+          <textarea id="background" name="background" placeholder="Explain situation or upload file below..." rows="4"></textarea>
+
+          <label for="upload">Upload Optional File (image, email, PDF):</label>
+          <input type="file" id="upload" name="upload" />
+        </div>
+
+        <!-- CTA Button -->
+        <div class="form-actions">
+          <button type="submit">Generate Email</button>
+        </div>
+      </form>
+
+      <!-- Subtle Trust Line -->
+      <p class="footer-note">Built by RealtySaSS — Let’s do it, A.I. Style.</p>
+
+      <!-- Optional progress loader -->
+      <div class="progress" id="progress"></div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

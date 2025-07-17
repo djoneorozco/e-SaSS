@@ -1,0 +1,15 @@
+{
+  "name": "e-sass",
+  "version": "1.0.0",
+  "description": "Your AI-Powered email assistance for Realtors",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "openai": "^5.10.1"
+  }
+}

@@ -1,0 +1,60 @@
+<!-- ============================
+  results.html — e-SaSS
+=============================== -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>e-SaSS Email Results</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="glow-wrapper">
+    <div class="results-container">
+      <h1>Your A.I. Powered Emails</h1>
+      <p class="tagline">Crafted with Psychology. Sharpened with Insight. Delivered SaSSy.</p>
+
+      <!-- Dual Email Outputs -->
+      <div style="display: flex; flex-direction: column; gap: 40px;">
+
+        <!-- Option A -->
+        <div class="mbti-details">
+          <h2>Option A</h2>
+          <div id="responseA" class="gpt-output">Loading...</div>
+        </div>
+
+        <!-- Option B -->
+        <div class="mbti-details">
+          <h2>Option B</h2>
+          <div id="responseB" class="gpt-output">Loading...</div>
+        </div>
+
+        <!-- Insight Section -->
+        <div class="mbti-details">
+          <h2>Behind the Script</h2>
+          <div id="insightBlock" class="gpt-output">Loading explanation...</div>
+        </div>
+
+      </div>
+
+      <!-- CTA -->
+      <div class="cta">
+        <p><a href="index.html">← Try Another Email</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ================
+    // Load results
+    // ================
+    document.getElementById("responseA").innerText = localStorage.getItem("eSaSS_ResponseA") || "No content available.";
+    document.getElementById("responseB").innerText = localStorage.getItem("eSaSS_ResponseB") || "No content available.";
+    document.getElementById("insightBlock").innerText = localStorage.getItem("eSaSS_Insights") || "No insights provided.";
+
+    // Optional: clear storage after render
+    // localStorage.clear();
+  </script>
+</body>
+</html>
