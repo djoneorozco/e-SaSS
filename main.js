@@ -18,7 +18,9 @@ window.addEventListener("DOMContentLoaded", () => {
     outputWrapper.style.display = "none";
     progress.innerText = "Generating email magic... 🧠💬";
 
-    // Gather form data
+    // ========================
+    // #1: Gather Form Data
+    // ========================
     const formData = new FormData(form);
     const purpose = formData.get("purpose");
     const audience = formData.get("audience");
@@ -28,21 +30,23 @@ window.addEventListener("DOMContentLoaded", () => {
     const background = formData.get("background")?.trim();
     const file = formData.get("upload");
 
-    // Optional lens depth
+    // Lens Depth (if enabled)
     const useLenses = formData.get("lensToggle") === "on";
     const psychology = useLenses ? parseInt(formData.get("psychology")) : null;
     const business = useLenses ? parseInt(formData.get("business")) : null;
     const technical = useLenses ? parseInt(formData.get("technical")) : null;
 
-    // Basic validation
+    // Basic Validation
     if (!purpose || !audience) {
       progress.innerText = "Please complete required fields.";
       return;
     }
 
-    // Build prompt
+    // ========================
+    // #2: Construct Prompt
+    // ========================
     let prompt = `
-You are e-SaSS, an elite A.I. assistant trained in psychology, business etiquette, and persuasive communication. Write TWO polished real estate emails based on the following inputs:
+You are e-SaSS, an elite A.I. assistant trained in psychology, luxury real estate, business etiquette, and persuasive communication. Write TWO professionally crafted real estate emails using the parameters below. Your tone must reflect the sophistication of a Stanford MBA and a Harvard-trained real estate agent.
 
 Message Purpose: ${purpose}
 Recipient Type: ${audience}
@@ -53,37 +57,45 @@ Context Provided: ${background || "No summary provided."}
 `;
 
     if (file && file.name) {
-      prompt += `\nFile Uploaded by User: ${file.name}`;
+      prompt += `\nFile Uploaded: ${file.name}`;
     }
 
-    // Append lens depth only for backend logic — not for output
     if (useLenses) {
-      prompt += `\nPsychology Lens: ${psychology}/10\nBusiness Lens: ${business}/10\nInsight Depth: ${technical}/10`;
+      prompt += `
+Psychology Lens: ${psychology}/10
+Business Lens: ${business}/10
+Insight Depth: ${technical}/10
+`;
     }
 
     prompt += `
-Write two separate email scripts (under 500 words each), displayed side-by-side.
-After each email, add a short explanation of the tone or persuasion logic used.
-Use advanced insight based on the tone, audience, and purpose.
+Generate:
+- Two distinct email scripts (under 500 words each)
+- Each should include a compelling tone and tailored strategy
+- Below each email, add a short breakdown explaining the writing style or persuasion logic
+- Write with clarity, empathy, authority, and polish
 `;
 
+    // ========================
+    // #3: Call OpenAI Function
+    // ========================
     try {
-      // 🔥 Live OpenAI integration via Netlify
       const response = await fetch("/.netlify/functions/generateEmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt })
+        body: JSON.stringify({ prompt }),
       });
 
       const data = await response.json();
       if (!data || !data.result) throw new Error("Empty OpenAI response");
 
-      // ✅ Render Output
+      // ========================
+      // #4: Render Output
+      // ========================
       output.innerHTML = `<pre>${data.result}</pre>`;
       outputWrapper.style.display = "block";
-      progress.innerText = "✨ Your smart email is ready!";
+      progress.innerText = "✨ Your smart email is ready!`;
 
-      // 🎯 Lens Breakdown
       if (useLenses) {
         lensResults.innerHTML = `
           <div class="lens-breakdown">
