@@ -3,7 +3,6 @@
 //# Fortune 500 A+ Quality
 //# ================================
 
-// DOM Load
 window.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("eSaSSForm");
   const progress = document.getElementById("progress");
@@ -14,7 +13,6 @@ window.addEventListener("DOMContentLoaded", () => {
     output.innerHTML = "";
     progress.innerText = "Crafting your smart email... ✨";
 
-    // Collect form values
     const formData = new FormData(form);
     const purpose = formData.get("purpose")?.trim();
     const audience = formData.get("audience")?.trim();
@@ -26,13 +24,11 @@ window.addEventListener("DOMContentLoaded", () => {
     const background = formData.get("background")?.trim();
     const file = formData.get("upload");
 
-    // Input validation
     if (!purpose || !audience) {
       progress.innerText = "Please fill in the required fields.";
       return;
     }
 
-    // Assemble the user profile prompt
     const prompt = `
 You are e-SaSS, an elite A.I. trained to write real estate emails using human psychology, business tone, and professional-grade communication. 
 Craft TWO apology or correction-based email scripts for the following case:
@@ -46,6 +42,7 @@ Business Insight Lens: ${business}/10
 Technical Analysis Depth: ${technical}/10
 
 Context: ${background || "No summary provided."}
+${file && file.name ? `\nFile uploaded by user for reference: ${file.name}` : ""}
 
 Please:
 - Write 2 separate email options side-by-side
@@ -54,13 +51,7 @@ Please:
 - Highlight tone choice and persuasion logic used
 `;
 
-    // If file was uploaded, include its name (not contents) in context
-    if (file && file.name) {
-      prompt += `\nFile uploaded by user for reference: ${file.name}`;
-    }
-
     try {
-      // Call to OpenAI (replace with real API call)
       const fakeResponse = await fakeOpenAI(prompt);
       output.innerHTML = `<pre class="gpt-output">${fakeResponse}</pre>`;
       progress.innerText = "✨ Email scripts generated below.";
@@ -71,7 +62,6 @@ Please:
   });
 });
 
-// Mock OpenAI Call — replace with real integration
 async function fakeOpenAI(prompt) {
   return new Promise((resolve) => {
     setTimeout(() => {
