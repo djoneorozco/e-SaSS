@@ -1,6 +1,6 @@
 // ================================
-// # generateEmail.js — Netlify Function (OpenAI v4 Fix)
-// # Fortune 500 Grade | Updated July 2025
+// # generateEmail.js — Netlify Function
+// # OpenAI v4 Integration | Ivy-Grade Quality
 // ================================
 
 const OpenAI = require("openai");
@@ -38,7 +38,7 @@ exports.handler = async (event) => {
       max_tokens: 1000,
     });
 
-    const aiText = completion.choices?.[0]?.message?.content || "";
+    const aiText = completion.choices[0]?.message?.content || "";
 
     return {
       statusCode: 200,
@@ -48,10 +48,7 @@ exports.handler = async (event) => {
     console.error("OpenAI function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: "Server error",
-        detail: err.message,
-      }),
+      body: JSON.stringify({ error: "Server error", detail: err.message }),
     };
   }
 };
