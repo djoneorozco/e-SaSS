@@ -9,6 +9,8 @@ exports.handler = async (event) => {
     const body = JSON.parse(event.body);
     const prompt = body.prompt;
 
+    console.log("📩 Incoming prompt:", prompt); // Debug log
+
     if (!prompt) {
       return {
         statusCode: 400,
@@ -27,7 +29,8 @@ exports.handler = async (event) => {
       messages: [
         {
           role: "system",
-          content: "You are a luxury real estate email assistant named e-SaSS. You write two polished marketing emails based on input tone, purpose, and audience. Each is ~250 words and includes a persuasion strategy summary after.",
+          content:
+            "You are a luxury real estate email assistant named e-SaSS. You write two polished marketing emails based on input tone, purpose, and audience. Each is ~250 words and includes a persuasion strategy summary after.",
         },
         {
           role: "user",
@@ -38,17 +41,31 @@ exports.handler = async (event) => {
       max_tokens: 1000,
     });
 
+    console.log("✅ OpenAI raw response:", JSON.stringify(completion.data)); // Debug log
+
     const aiText = completion.data.choices[0]?.message?.content || "";
+
+    if (!aiText) {
+      console.warn("⚠️ Empty response from OpenAI");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "Empty OpenAI response" }),
+      };
+    }
 
     return {
       statusCode: 200,
       body: JSON.stringify({ result: aiText }),
     };
   } catch (err) {
-    console.error("OpenAI function error:", err);
+    console.error("❌ OpenAI function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Server error", detail: err.message }),
+      body: JSON.stringify({
+        error: "Server error",
+        detail: err.message,
+        stack: err.stack,
+      }),
     };
   }
 };
