@@ -1,47 +1,27 @@
 // ================================
-// # generateEmail.js — Netlify Function
-// # OpenAI Integration | Ivy-Grade Quality
+// # generateEmail.js — Netlify Function (OpenAI v4 Fix)
+// # Fortune 500 Grade | Updated July 2025
 // ================================
 
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 exports.handler = async (event) => {
   try {
-    // Parse incoming request
     const body = JSON.parse(event.body);
     const prompt = body.prompt;
 
-    // Log the incoming request body
-    console.log("📥 Incoming body:", body);
-    console.log("📝 Prompt received:", prompt);
-
-    // Validate prompt
     if (!prompt) {
-      console.warn("⚠️ No prompt provided in the request.");
       return {
         statusCode: 400,
         body: JSON.stringify({ error: "Prompt is required" }),
       };
     }
 
-    // Check for missing API key
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("❌ No OpenAI API Key found in environment!");
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "OpenAI key missing" }),
-      };
-    }
-
-    // Set up OpenAI config
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
-
-    const openai = new OpenAIApi(configuration);
-
-    // Call OpenAI Chat API
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
         {
@@ -58,20 +38,14 @@ exports.handler = async (event) => {
       max_tokens: 1000,
     });
 
-    const aiText = completion.data.choices[0]?.message?.content || "";
+    const aiText = completion.choices?.[0]?.message?.content || "";
 
-    // Log the full OpenAI response
-    console.log("🧠 OpenAI response:", aiText);
-
-    // Return result to frontend
     return {
       statusCode: 200,
       body: JSON.stringify({ result: aiText }),
     };
   } catch (err) {
-    // Log error for debugging
-    console.error("🔥 OpenAI function error:", err);
-
+    console.error("OpenAI function error:", err);
     return {
       statusCode: 500,
       body: JSON.stringify({
