@@ -1,7 +1,7 @@
 <!--
 =========================================
-# e-SaSS — Smart Email Generator (2035 UX)
-# Fortune 500 Polished | Ivy 2.99 Activated
+# e-SaSS — Smart Email Generator (V2)
+# Fortune 500 Polished | Ivy 2.99 Upgrade
 # Built by RealtySaSS — Let’s do it, A.I. Style.
 =========================================
 -->
@@ -24,39 +24,67 @@
       <p class="tagline">Your A.I. email assistant — tuned to your tone, powered by real insight.</p>
 
       <form id="eSaSSForm">
-
         <!-- Primary Info Section -->
         <div class="form-section">
           <label for="purpose">1. What’s the purpose of your message?</label>
-          <input type="text" id="purpose" name="purpose" placeholder="e.g., Apologize, Persuade, Inform..." required />
+          <select id="purpose" name="purpose" required>
+            <option value="">-- Select Purpose --</option>
+            <option value="Inform">Inform</option>
+            <option value="Persuade">Persuade</option>
+            <option value="Clarify">Clarify</option>
+            <option value="Apologize">Apologize</option>
+            <option value="Congratulate">Congratulate</option>
+          </select>
 
           <label for="audience">2. Who is the message for?</label>
-          <input type="text" id="audience" name="audience" placeholder="e.g., Buyer, Client, Partner..." required />
+          <select id="audience" name="audience" required>
+            <option value="">-- Select Recipient --</option>
+            <option value="Buyer">Buyer</option>
+            <option value="Seller">Seller</option>
+            <option value="Connect New Client">Connect New Client</option>
+            <option value="Connect Old Client">Connect Old Client</option>
+          </select>
 
           <label for="sassLevel">3. Desired Tone (SaSS Level): <span id="sassValue">5</span></label>
-          <input type="range" id="sassLevel" name="sassLevel" min="1" max="10" value="5" oninput="sassValue.innerText = this.value" />
+          <div class="slider-labels">
+            <span>Professional / Direct</span>
+            <input type="range" id="sassLevel" name="sassLevel" min="1" max="10" value="5" oninput="sassValue.innerText = this.value" />
+            <span>Friendly / Casual</span>
+          </div>
 
-          <label for="friendliness">4. Friendliness: <span id="friendValue">5</span></label>
-          <input type="range" id="friendliness" name="friendliness" min="1" max="10" value="5" oninput="friendValue.innerText = this.value" />
+          <label for="contextDepth">4. Context Depth: <span id="contextValue">5</span></label>
+          <div class="slider-labels">
+            <span>Low (100 words)</span>
+            <input type="range" id="contextDepth" name="contextDepth" min="1" max="10" value="5" oninput="contextValue.innerText = this.value" />
+            <span>High (500 words)</span>
+          </div>
+
+          <label for="emojiSlang">5. Emoji / Slang Usage: <span id="emojiValue">0</span></label>
+          <input type="range" id="emojiSlang" name="emojiSlang" min="0" max="10" value="0" oninput="emojiValue.innerText = this.value" />
         </div>
 
-        <!-- Insight Sliders Section -->
+        <!-- Toggle for Lens Depth Controls -->
         <div class="form-section">
-          <h2>Lens Depth Controls</h2>
+          <label for="lensToggle">
+            <input type="checkbox" id="lensToggle" name="lensToggle" />
+            Show Lens Depth Controls
+          </label>
 
-          <label for="psychology">5. Psychology Lens Depth: <span id="psychValue">5</span></label>
-          <input type="range" id="psychology" name="psychology" min="1" max="10" value="5" oninput="psychValue.innerText = this.value" />
+          <div id="lensControls" style="display: none;">
+            <label for="psychology">Psychology Lens Depth: <span id="psychValue">5</span></label>
+            <input type="range" id="psychology" name="psychology" min="1" max="10" value="5" oninput="psychValue.innerText = this.value" />
 
-          <label for="business">6. Business Lens Depth: <span id="bizValue">5</span></label>
-          <input type="range" id="business" name="business" min="1" max="10" value="5" oninput="bizValue.innerText = this.value" />
+            <label for="business">Business Lens Depth: <span id="bizValue">5</span></label>
+            <input type="range" id="business" name="business" min="1" max="10" value="5" oninput="bizValue.innerText = this.value" />
 
-          <label for="technical">7. Insight Lens Depth: <span id="techValue">5</span></label>
-          <input type="range" id="technical" name="technical" min="1" max="10" value="5" oninput="techValue.innerText = this.value" />
+            <label for="technical">Insight Lens Depth: <span id="techValue">5</span></label>
+            <input type="range" id="technical" name="technical" min="1" max="10" value="5" oninput="techValue.innerText = this.value" />
+          </div>
         </div>
 
         <!-- Context + Upload -->
         <div class="form-section">
-          <label for="background">8. Quick Summary or Upload for Context:</label>
+          <label for="background">Quick Summary or Upload for Context:</label>
           <textarea id="background" name="background" placeholder="Explain situation or upload file below..." rows="4"></textarea>
 
           <label for="upload">Upload Optional File (image, email, PDF):</label>
@@ -69,17 +97,34 @@
         </div>
       </form>
 
-      <!-- Output container FIXED -->
-      <div id="emailOutput" class="output-section"></div>
+      <!-- Output Display Box -->
+      <div id="outputWrapper" style="display:none;">
+        <h3>Email Output</h3>
+        <button onclick="copyOutput()">COPY</button>
+        <pre id="emailOutput" class="gpt-output"></pre>
+        <div id="lensResults"></div>
+      </div>
 
       <!-- Subtle Trust Line -->
       <p class="footer-note">Built by RealtySaSS — Let’s do it, A.I. Style.</p>
-
-      <!-- Optional progress loader -->
       <div class="progress" id="progress"></div>
     </div>
   </div>
 
+  <script>
+    const toggle = document.getElementById("lensToggle");
+    const lensControls = document.getElementById("lensControls");
+    toggle.addEventListener("change", () => {
+      lensControls.style.display = toggle.checked ? "block" : "none";
+    });
+
+    function copyOutput() {
+      const output = document.getElementById("emailOutput").innerText;
+      navigator.clipboard.writeText(output).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+  </script>
   <script src="main.js"></script>
 </body>
 </html>
