@@ -1,15 +1,15 @@
 // ================================
 // # generateEmail.js — Netlify Function
-// # OpenAI v4 Integration | Ivy-Grade Quality
+// # OpenAI v4 | ESM Syntax | Ivy A+ Ready
 // ================================
 
-const OpenAI = require("openai");
+import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-exports.handler = async (event) => {
+export async function handler(event) {
   try {
     const body = JSON.parse(event.body);
     const prompt = body.prompt;
@@ -51,4 +51,4 @@ exports.handler = async (event) => {
       body: JSON.stringify({ error: "Server error", detail: err.message }),
     };
   }
-};
+}
