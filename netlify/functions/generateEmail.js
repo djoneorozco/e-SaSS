@@ -1,6 +1,6 @@
 // ================================
 // # generateEmail.js — Netlify Function
-// # OpenAI v4 | ESM Syntax | A+ Tested
+// # Debug + Production Ready
 // ================================
 
 import { OpenAI } from "openai";
@@ -11,8 +11,24 @@ const openai = new OpenAI({
 
 export async function handler(event) {
   try {
+    if (event.httpMethod !== "POST") {
+      return {
+        statusCode: 405,
+        body: JSON.stringify({ error: "Method Not Allowed" }),
+      };
+    }
+
     const body = JSON.parse(event.body);
-    const prompt = body.prompt || "Say something insightful";
+    const prompt = body.prompt;
+
+    if (!prompt || prompt.length < 10) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: "Prompt too short or missing." }),
+      };
+    }
+
+    console.log("🧠 Incoming prompt:\n", prompt);
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
@@ -31,17 +47,25 @@ export async function handler(event) {
       max_tokens: 1200,
     });
 
-    const aiText = completion.choices[0].message.content;
+    const aiText = completion.choices[0]?.message?.content;
+
+    if (!aiText || aiText.trim() === "") {
+      throw new Error("Empty response from OpenAI");
+    }
 
     return {
       statusCode: 200,
       body: JSON.stringify({ result: aiText }),
     };
   } catch (err) {
-    console.error("❌ OpenAI error:", err);
+    console.error("🔥 OpenAI error:", err);
+
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "OpenAI call failed", detail: err.message }),
+      body: JSON.stringify({
+        error: "Internal server error",
+        detail: err.message || "Something went wrong",
+      }),
     };
   }
 }
