@@ -11,5 +11,13 @@
   "license": "ISC",
   "dependencies": {
     "openai": "^5.10.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/djoneorozco/e-SaSS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/djoneorozco/e-SaSS/issues"
+  },
+  "homepage": "https://github.com/djoneorozco/e-SaSS#readme"
 }
