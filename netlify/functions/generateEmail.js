@@ -9,20 +9,20 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function handler(event) {
+export default async function handler(event) {
   try {
-    const body = JSON.parse(event.body);
+    const body = JSON.parse(event.body || "{}");
     const prompt = body.prompt;
 
-    if (!prompt) {
+    if (!prompt || typeof prompt !== "string") {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Prompt is required" }),
+        body: JSON.stringify({ error: "Prompt is required and must be a string." }),
       };
     }
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
@@ -38,17 +38,20 @@ export async function handler(event) {
       max_tokens: 1000,
     });
 
-    const aiText = completion.choices[0]?.message?.content || "";
+    const result = response.choices?.[0]?.message?.content ?? "";
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ result: aiText }),
+      body: JSON.stringify({ result }),
     };
   } catch (err) {
-    console.error("OpenAI function error:", err);
+    console.error("❌ OpenAI function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Server error", detail: err.message }),
+      body: JSON.stringify({
+        error: "Server error",
+        detail: err.message || "Unknown error",
+      }),
     };
   }
 }
