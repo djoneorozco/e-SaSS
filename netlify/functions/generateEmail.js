@@ -1,28 +1,28 @@
 // ================================
 // # generateEmail.js — Netlify Function
-// # OpenAI v4 | ESM Syntax | Ivy A+ Ready
+// # Fixed for CommonJS / Netlify Function Compatibility
 // ================================
 
-import OpenAI from "openai";
+const { OpenAI } = require("openai");
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export default async function handler(event) {
+exports.handler = async function (event) {
   try {
-    const body = JSON.parse(event.body || "{}");
+    const body = JSON.parse(event.body);
     const prompt = body.prompt;
 
-    if (!prompt || typeof prompt !== "string") {
+    if (!prompt) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Prompt is required and must be a string." }),
+        body: JSON.stringify({ error: "Prompt is required" }),
       };
     }
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
       messages: [
         {
           role: "system",
@@ -38,20 +38,17 @@ export default async function handler(event) {
       max_tokens: 1000,
     });
 
-    const result = response.choices?.[0]?.message?.content ?? "";
+    const aiText = completion.choices[0]?.message?.content || "";
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ result }),
+      body: JSON.stringify({ result: aiText }),
     };
   } catch (err) {
-    console.error("❌ OpenAI function error:", err);
+    console.error("OpenAI function error:", err);
     return {
       statusCode: 500,
-      body: JSON.stringify({
-        error: "Server error",
-        detail: err.message || "Unknown error",
-      }),
+      body: JSON.stringify({ error: "Server error", detail: err.message }),
     };
   }
-}
+};
