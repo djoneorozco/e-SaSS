@@ -83,7 +83,7 @@ Generate:
       const response = await fetch("/.netlify/functions/generateEmail", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt })
       });
 
       const data = await response.json();
@@ -94,7 +94,7 @@ Generate:
       // ========================
       output.innerHTML = `<pre>${data.result}</pre>`;
       outputWrapper.style.display = "block";
-      progress.innerText = "✨ Your smart email is ready!`;
+      progress.innerText = "✨ Your smart email is ready!";
 
       if (useLenses) {
         lensResults.innerHTML = `
