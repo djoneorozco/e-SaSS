@@ -1,71 +1,106 @@
-//# ================================
-//# main.js — e-SaSS Logic Engine
-//# Fortune 500 A+ Quality
-//# ================================
+// ================================
+// # main.js — e-SaSS V2 Logic Engine
+// # Fortune 500 | Ivy League Quality
+// ================================
 
 window.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("eSaSSForm");
-  const progress = document.getElementById("progress");
+  const outputWrapper = document.getElementById("outputWrapper");
   const output = document.getElementById("emailOutput");
+  const progress = document.getElementById("progress");
+  const lensToggle = document.getElementById("lensToggle");
+  const lensResults = document.getElementById("lensResults");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     output.innerHTML = "";
-    progress.innerText = "Crafting your smart email... ✨";
+    lensResults.innerHTML = "";
+    outputWrapper.style.display = "none";
+    progress.innerText = "Generating email magic... 🧠💬";
 
+    // Gather form data
     const formData = new FormData(form);
-    const purpose = formData.get("purpose")?.trim();
-    const audience = formData.get("audience")?.trim();
+    const purpose = formData.get("purpose");
+    const audience = formData.get("audience");
     const sassLevel = parseInt(formData.get("sassLevel"));
-    const friendliness = parseInt(formData.get("friendliness"));
-    const psychology = parseInt(formData.get("psychology"));
-    const business = parseInt(formData.get("business"));
-    const technical = parseInt(formData.get("technical"));
+    const contextDepth = parseInt(formData.get("contextDepth"));
+    const emojiSlang = parseInt(formData.get("emojiSlang"));
     const background = formData.get("background")?.trim();
     const file = formData.get("upload");
 
+    // Optional lens depth
+    const useLenses = formData.get("lensToggle") === "on";
+    const psychology = useLenses ? parseInt(formData.get("psychology")) : null;
+    const business = useLenses ? parseInt(formData.get("business")) : null;
+    const technical = useLenses ? parseInt(formData.get("technical")) : null;
+
+    // Basic validation
     if (!purpose || !audience) {
-      progress.innerText = "Please fill in the required fields.";
+      progress.innerText = "Please complete required fields.";
       return;
     }
 
-    const prompt = `
-You are e-SaSS, an elite A.I. trained to write real estate emails using human psychology, business tone, and professional-grade communication. 
-Craft TWO apology or correction-based email scripts for the following case:
+    // Build prompt
+    let prompt = `
+You are e-SaSS, an elite A.I. assistant trained in psychology, business etiquette, and persuasive communication. Write TWO polished real estate emails based on the following inputs:
 
-Purpose: ${purpose}
-Audience: ${audience}
+Message Purpose: ${purpose}
+Recipient Type: ${audience}
 Tone (SaSS Level): ${sassLevel}/10
-Friendliness: ${friendliness}/10
-Psychology Lens Depth: ${psychology}/10
-Business Insight Lens: ${business}/10
-Technical Analysis Depth: ${technical}/10
+Context Depth: ${contextDepth}/10
+Emoji/Slang Usage: ${emojiSlang}/10
+Context Provided: ${background || "No summary provided."}
+`;
 
-Context: ${background || "No summary provided."}
-${file && file.name ? `\nFile uploaded by user for reference: ${file.name}` : ""}
+    if (file && file.name) {
+      prompt += `\nFile Uploaded by User: ${file.name}`;
+    }
 
-Please:
-- Write 2 separate email options side-by-side
-- Make each under 500 words
-- Include psychological or business insight briefly below each
-- Highlight tone choice and persuasion logic used
+    // Append lens depth only for backend logic — not for output
+    if (useLenses) {
+      prompt += `\nPsychology Lens: ${psychology}/10\nBusiness Lens: ${business}/10\nInsight Depth: ${technical}/10`;
+    }
+
+    prompt += `
+Write two separate email scripts (under 500 words each), displayed side-by-side.
+After each email, add a short explanation of the tone or persuasion logic used.
+Use advanced insight based on the tone, audience, and purpose.
 `;
 
     try {
-      const fakeResponse = await fakeOpenAI(prompt);
-      output.innerHTML = `<pre class="gpt-output">${fakeResponse}</pre>`;
-      progress.innerText = "✨ Email scripts generated below.";
+      // Replace with actual OpenAI call when ready
+      const gptResponse = await fakeOpenAI(prompt);
+
+      // Render output
+      output.innerHTML = `<pre>${gptResponse}</pre>`;
+      outputWrapper.style.display = "block";
+      progress.innerText = "✨ Your smart email is ready!";
+
+      // Lens Breakdown if enabled
+      if (useLenses) {
+        lensResults.innerHTML = `
+          <div class="lens-breakdown">
+            <h4>Lens Analysis (for reference only)</h4>
+            <ul>
+              <li>🧠 Psychology: ${psychology}/10</li>
+              <li>💼 Business: ${business}/10</li>
+              <li>🛠️ Insight: ${technical}/10</li>
+            </ul>
+          </div>
+        `;
+      }
     } catch (error) {
       console.error("Error generating email:", error);
-      progress.innerText = "Error generating email. Try again.";
+      progress.innerText = "❌ Failed to generate. Try again.";
     }
   });
 });
 
+// Simulated OpenAI call — replace this with actual integration
 async function fakeOpenAI(prompt) {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve(`--- EMAIL SCRIPT A ---\nDear [Name],\nI want to sincerely apologize for the confusion...\n\n--- EMAIL SCRIPT B ---\nHi [Name],\nThank you for your patience — let me clarify what happened...\n\n🧠 Psychology Lens: Used framing & emotional validation\n💼 Business Lens: Maintained professionalism, offered solution\n🛠️ Technical: Explained root issue & next steps`);
-    }, 1500);
+      resolve(`--- EMAIL SCRIPT A ---\nDear [Client],\nWe’re excited to introduce you to your new home opportunity...\n\n--- EMAIL SCRIPT B ---\nHi [Buyer],\nHope you're doing great! Wanted to share an exciting new listing...\n\n🔍 Tone Strategy: Used warmth, clarity, and positioning based on tone level\n💬 Persuasion Tactic: Tailored language to match buyer expectations`);
+    }, 1800);
   });
 }
