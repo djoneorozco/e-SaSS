@@ -1,163 +1,190 @@
-//# ================================
-//# style.css — e-SaSS, House of SaSS Edition
-//# ================================
+/* ========================================
+   LUXURY STYLE SHEET — e-SaSS V2
+   Fortune 500 | Stanford MBA | Apple-grade UI
+=========================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-
-/*#1 — Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --primary: #4263eb;
+  --primary-dark: #3347c3;
+  --background: #f9f9f9;
+  --white: #ffffff;
+  --text: #111111;
+  --accent: #eaeaea;
+  --radius: 12px;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  --font-header: 'Playfair Display', serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: linear-gradient(135deg, #f8f9fc, #edf0f5);
-  color: #222;
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--background);
+  color: var(--text);
   line-height: 1.6;
-  padding: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
 }
 
-/*#2 — Glow Wrapper */
-.glow-wrapper {
-  width: 100%;
-  max-width: 720px;
-  background: #ffffff;
-  border-radius: 20px;
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
-  padding: 3rem;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-/*#3 — Header + Tagline */
-.quiz-container h1 {
-  font-size: 2.6rem;
-  font-weight: 700;
-  color: #121212;
+.site-title {
+  font-family: var(--font-header);
+  font-size: 2.8rem;
   margin-bottom: 0.5rem;
+  color: var(--text);
 }
 
 .tagline {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #5a5a5a;
+  font-size: 1.1rem;
+  color: #555;
   margin-bottom: 2rem;
 }
 
-/*#4 — Form Layout */
-form label {
-  display: block;
-  margin-top: 1.4rem;
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: #333;
+.quiz-container {
+  max-width: 700px;
+  margin: 3rem auto;
+  padding: 3rem 2rem;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
-form input[type="text"],
-form textarea {
+.form-section {
+  margin-bottom: 2.5rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+input[type="text"],
+input[type="file"],
+select,
+textarea {
   width: 100%;
-  padding: 0.75rem;
-  margin-top: 0.5rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  font-size: 0.95rem;
-  background-color: #fafafa;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  background: #fff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
   transition: border 0.2s ease;
 }
 
-form input[type="text"]:focus,
-form textarea:focus {
-  border-color: #3f5efb;
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primary);
   outline: none;
 }
 
-form input[type="file"] {
-  margin-top: 0.6rem;
-  font-size: 0.9rem;
-  background: #fafafa;
-  padding: 0.3rem;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
-
-/*#5 — Sliders */
-form input[type="range"] {
+input[type="range"] {
   width: 100%;
-  margin-top: 0.4rem;
-  -webkit-appearance: none;
-  height: 6px;
-  background: #ddd;
-  border-radius: 10px;
-  outline: none;
-  transition: background 0.2s;
+  margin-top: 0.25rem;
+  margin-bottom: 1.2rem;
 }
 
-form input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 18px;
-  height: 18px;
-  background: #3f5efb;
-  cursor: pointer;
-  border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  transition: transform 0.2s;
-}
-
-form input[type="range"]:hover::-webkit-slider-thumb {
-  transform: scale(1.1);
-}
-
-/*#6 — Button */
-form button {
-  display: block;
+button[type="submit"] {
   width: 100%;
   padding: 1rem;
-  margin-top: 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  background: linear-gradient(to right, #3f5efb, #6a82fb);
+  font-size: 1rem;
+  background: var(--primary);
+  color: var(--white);
   border: none;
-  color: white;
-  border-radius: 12px;
+  border-radius: var(--radius);
   cursor: pointer;
   transition: background 0.3s ease;
-  letter-spacing: 0.3px;
+  font-weight: 600;
 }
 
-form button:hover {
-  background: linear-gradient(to right, #2e4de0, #5e74e8);
+button[type="submit"]:hover {
+  background: var(--primary-dark);
 }
 
-/*#7 — Progress Bar */
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
 .progress {
+  font-size: 0.95rem;
+  color: #333;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.footer-note {
   margin-top: 2rem;
-  height: 6px;
-  width: 100%;
-  background-color: #eaeaea;
-  border-radius: 5px;
-  overflow: hidden;
+  font-size: 0.85rem;
+  text-align: center;
+  color: #888;
 }
 
-.progress::after {
-  content: "";
-  display: block;
-  height: 100%;
-  width: 0%;
-  background: #3f5efb;
-  animation: loadingBar 2s linear infinite;
+h2 {
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
 }
 
-@keyframes loadingBar {
-  0% { width: 0%; }
-  50% { width: 100%; }
-  100% { width: 0%; }
+#gptOutputWrapper {
+  background: #fcfcfc;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-top: 2rem;
+  box-shadow: var(--shadow);
+}
+
+.gpt-output {
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+  font-size: 0.95rem;
+  color: #333;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid #e0e0e0;
+  margin-top: 1rem;
+}
+
+.copy-button {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  background: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+  background: #e3e3e3;
+}
+
+/* Checkbox Styling */
+input[type="checkbox"] {
+  margin-right: 0.5rem;
+  transform: scale(1.2);
+}
+
+/* Dropdown Styling */
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23999' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 8px 10px;
+}
+
+/* Sliders Labels Inline */
+.slider-label {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  color: #666;
 }
