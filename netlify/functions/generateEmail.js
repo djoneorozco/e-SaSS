@@ -1,36 +1,46 @@
 // ================================
-// # generateEmail.js — Netlify Function Debug
+// # generateEmail.js — Netlify Function
+// # OpenAI Integration | Ivy-Grade Quality
 // ================================
+
 const { Configuration, OpenAIApi } = require("openai");
 
 exports.handler = async (event) => {
   try {
+    // Parse incoming request
     const body = JSON.parse(event.body);
     const prompt = body.prompt;
 
+    // Log the incoming request body
+    console.log("📥 Incoming body:", body);
+    console.log("📝 Prompt received:", prompt);
+
+    // Validate prompt
     if (!prompt) {
+      console.warn("⚠️ No prompt provided in the request.");
       return {
         statusCode: 400,
         body: JSON.stringify({ error: "Prompt is required" }),
       };
     }
 
-    console.log("🧠 Received prompt:", prompt);
+    // Check for missing API key
+    if (!process.env.OPENAI_API_KEY) {
+      console.error("❌ No OpenAI API Key found in environment!");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "OpenAI key missing" }),
+      };
+    }
 
+    // Set up OpenAI config
     const configuration = new Configuration({
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    if (!process.env.OPENAI_API_KEY) {
-      console.error("❌ No OpenAI API key found in environment!");
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "OpenAI API key missing" }),
-      };
-    }
-
     const openai = new OpenAIApi(configuration);
 
+    // Call OpenAI Chat API
     const completion = await openai.createChatCompletion({
       model: "gpt-4",
       messages: [
@@ -48,23 +58,26 @@ exports.handler = async (event) => {
       max_tokens: 1000,
     });
 
-    console.log("✅ OpenAI raw response:", completion.data);
-
     const aiText = completion.data.choices[0]?.message?.content || "";
 
-    if (!aiText) {
-      throw new Error("OpenAI returned an empty message content");
-    }
+    // Log the full OpenAI response
+    console.log("🧠 OpenAI response:", aiText);
 
+    // Return result to frontend
     return {
       statusCode: 200,
       body: JSON.stringify({ result: aiText }),
     };
   } catch (err) {
-    console.error("❌ OpenAI function error:", err);
+    // Log error for debugging
+    console.error("🔥 OpenAI function error:", err);
+
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Server error", detail: err.message }),
+      body: JSON.stringify({
+        error: "Server error",
+        detail: err.message,
+      }),
     };
   }
 };
