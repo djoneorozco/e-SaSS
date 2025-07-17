@@ -1,6 +1,6 @@
 // ================================
-// # generateEmail.js — Netlify Function
-// # Debug + Production Ready
+// # generateEmail.js — Netlify Function (Fixed)
+// # Handles prompt errors, OpenAI fails, and JSON crashes
 // ================================
 
 import { OpenAI } from "openai";
@@ -21,7 +21,7 @@ export async function handler(event) {
     const body = JSON.parse(event.body);
     const prompt = body.prompt;
 
-    // ✅ TEST FUNCTION SHORTCUT (Step 1)
+    // ✅ TEST SHORTCUT
     if (prompt === "TEST_FUNCTION") {
       return {
         statusCode: 200,
@@ -36,8 +36,9 @@ export async function handler(event) {
       };
     }
 
-    console.log("🧠 Incoming prompt:\n", prompt);
+    console.log("🧠 Incoming prompt:", prompt);
 
+    // ✅ OpenAI API Call
     const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
@@ -46,19 +47,20 @@ export async function handler(event) {
           content:
             "You are e-SaSS, an elite A.I. assistant trained in psychology, luxury real estate, business etiquette, and persuasive communication. Write TWO professionally crafted real estate emails using the parameters below. Your tone must reflect the sophistication of a Stanford MBA and a Harvard-trained real estate agent.",
         },
-        {
-          role: "user",
-          content: prompt,
-        },
+        { role: "user", content: prompt },
       ],
       temperature: 0.7,
       max_tokens: 1200,
     });
 
-    const aiText = completion.choices[0]?.message?.content;
+    const aiText = completion.choices?.[0]?.message?.content;
 
     if (!aiText || aiText.trim() === "") {
-      throw new Error("Empty response from OpenAI");
+      console.error("❌ Empty OpenAI response");
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: "OpenAI returned empty content." }),
+      };
     }
 
     return {
@@ -66,14 +68,14 @@ export async function handler(event) {
       body: JSON.stringify({ result: aiText }),
     };
   } catch (err) {
-    console.error("🔥 OpenAI FULL ERROR:", err);
+    console.error("🔥 Function crash:", err.message);
 
+    // ✅ Still return valid JSON so the frontend won't crash
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "Internal server error",
-        detail: err.message,
-        full: err, // 👈 this will help you see real cause in browser DevTools
+        error: "Internal Server Error",
+        detail: err.message || "Unknown server error",
       }),
     };
   }
