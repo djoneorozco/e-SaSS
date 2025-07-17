@@ -1,71 +1,57 @@
-const { Configuration, OpenAIApi } = require("openai");
+// ================================
+// # generateEmail.js — Netlify Serverless Function
+// ================================
 
-exports.handler = async function (event, context) {
+const fetch = require("node-fetch");
+
+exports.handler = async function(event, context) {
+  if (event.httpMethod !== "POST") {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: "Method Not Allowed" }),
+    };
+  }
+
   try {
-    if (event.httpMethod !== "POST") {
-      return {
-        statusCode: 405,
-        body: JSON.stringify({ error: "Method Not Allowed" }),
-      };
-    }
+    const { prompt } = JSON.parse(event.body);
 
-    // Debug: Log environment and incoming body
-    console.log("📨 Incoming Body:", event.body);
-    console.log("🔐 Checking API Key presence:", !!process.env.OPENAI_API_KEY);
-
-    if (!process.env.OPENAI_API_KEY) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: "Missing OpenAI API key in server environment." }),
-      };
-    }
-
-    // Parse prompt from body
-    let prompt;
-    try {
-      const data = JSON.parse(event.body);
-      prompt = data.prompt || "Say hello as a real estate agent.";
-    } catch (parseErr) {
+    if (!prompt) {
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: "Invalid JSON in request body", details: parseErr.message }),
+        body: JSON.stringify({ error: "Missing prompt" }),
       };
     }
 
-    console.log("🧠 Prompt to OpenAI:", prompt);
-
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
+    const openaiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4",
+        messages: [{ role: "user", content: prompt }],
+        temperature: 0.7,
+      }),
     });
 
-    const openai = new OpenAIApi(configuration);
+    const data = await openaiRes.json();
 
-    const completion = await openai.createChatCompletion({
-      model: "gpt-4",
-      messages: [
-        { role: "system", content: "You are an elite real estate email writer." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.7,
-      max_tokens: 1000,
-    });
-
-    const result = completion.data.choices[0].message.content;
-    console.log("✅ OpenAI Response Received");
+    if (!data.choices || !data.choices[0]?.message?.content) {
+      throw new Error("Empty OpenAI response");
+    }
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ result }),
+      body: JSON.stringify({ result: data.choices[0].message.content }),
     };
-  } catch (err) {
-    console.error("🔥 OpenAI Error:", err.response?.data || err.message || err);
-
+  } catch (error) {
+    console.error("🔥 OpenAI Error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
-        error: "OpenAI request failed",
-        message: err.message,
-        details: err.response?.data || "No additional error details",
+        error: "Failed to generate email",
+        detail: error.message,
       }),
     };
   }
