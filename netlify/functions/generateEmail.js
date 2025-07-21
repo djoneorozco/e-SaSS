@@ -1,5 +1,5 @@
 // ==========================
-// generateEmail.js (Node 18+, OpenAI v4+)
+// generateEmail.js (Node 18+, OpenAI v4+, gpt-4-turbo)
 // ==========================
 const OpenAI = require("openai");
 
@@ -21,7 +21,7 @@ exports.handler = async function (event, context) {
     const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4-turbo", // 🔥 FIXED: Use gpt-4-turbo for API access!
       messages: [
         {
           role: "system",
