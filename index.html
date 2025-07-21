@@ -16,8 +16,8 @@
     </label>
   </div>
 
-  <!-- 💼 FORM CARD -->
-  <form id="eSaSSForm" autocomplete="off" class="fade-in show">
+  <!-- 💼 Form Card -->
+  <form id="eSaSSForm" autocomplete="off">
     <h2>e-SaSS – Eloquent Email Generator</h2>
     <p>Let AI craft your perfect real estate message—<span style="font-weight:600;">tailored for you</span>.</p>
 
@@ -101,17 +101,16 @@
       </div>
     </div>
 
-    <button type="submit" id="generateBtn">Generate Email</button>
+    <button type="submit">Generate Email</button>
     <div id="progress" style="margin-top:12px;min-height:20px;color:#9647ff;font-weight:600;"></div>
   </form>
 
   <!-- =================== -->
   <!-- Email Output Card   -->
   <!-- =================== -->
-  <div id="outputWrapper" class="fade-in">
+  <div id="outputWrapper">
     <div class="email-card">
-      <button class="copy-btn" id="copyBtn" onclick="copyEmailOutput()">Copy All</button>
-      <button class="return-btn" id="returnBtn" type="button">Return Back</button>
+      <button class="copy-btn" onclick="copyEmailOutput()">Copy All</button>
       <div id="emailOutput"></div>
     </div>
   </div>
@@ -119,10 +118,7 @@
   <!-- =================== -->
   <!-- Lens Explanation    -->
   <!-- =================== -->
-  <div id="lensResults" class="fade-in">
-    <div class="lens-headline">Why AI Wrote It This Way</div>
-    <div id="lensContent"></div>
-  </div>
+  <div id="lensResults"></div>
 
   <!-- =================== -->
   <!-- SCRIPTS             -->
@@ -143,7 +139,7 @@
     function copyEmailOutput() {
       const text = document.getElementById('emailOutput').innerText;
       navigator.clipboard.writeText(text).then(() => {
-        const btn = document.getElementById('copyBtn');
+        const btn = document.querySelector('.copy-btn');
         btn.innerText = "Copied!";
         setTimeout(() => (btn.innerText = "Copy All"), 1200);
       });
