@@ -1,4 +1,7 @@
-const { Configuration, OpenAIApi } = require("openai");
+// ==========================
+// generateEmail.js (Node 18+, OpenAI v4+)
+// ==========================
+const OpenAI = require("openai");
 
 exports.handler = async function (event, context) {
   if (event.httpMethod !== "POST") {
@@ -12,13 +15,12 @@ exports.handler = async function (event, context) {
     const body = JSON.parse(event.body);
     const prompt = body.prompt || "Write a professional email.";
 
-    const configuration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-    });
+    // Log the prompt for debugging
+    console.log("PROMPT:", prompt);
 
-    const openai = new OpenAIApi(configuration);
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-    const completion = await openai.createChatCompletion({
+    const completion = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
         {
@@ -33,7 +35,10 @@ exports.handler = async function (event, context) {
       max_tokens: 700,
     });
 
-    const message = completion.data.choices[0].message.content;
+    // Log the full completion for debugging
+    console.log("COMPLETION:", completion);
+
+    const message = completion.choices?.[0]?.message?.content;
 
     if (!message) {
       return {
@@ -42,7 +47,6 @@ exports.handler = async function (event, context) {
       };
     }
 
-    // This is the key fix:
     return {
       statusCode: 200,
       body: JSON.stringify({ result: message }),
@@ -52,7 +56,10 @@ exports.handler = async function (event, context) {
 
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Failed to generate email." }),
+      body: JSON.stringify({
+        error: "Failed to generate email.",
+        details: err.message,
+      }),
     };
   }
 };
