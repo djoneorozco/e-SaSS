@@ -389,18 +389,3 @@ body.dark-mode #lensResults {
     margin: 9px 0 2px 0;
   }
 }
-
-/* =============================
-   MISC
-   ============================= */
-::-webkit-scrollbar {
-  width: 7px;
-  background: #25252522;
-}
-::-webkit-scrollbar-thumb {
-  background: #e1e1e140;
-  border-radius: 12px;
-}
-body.dark-mode ::-webkit-scrollbar-thumb {
-  background: #ffd70030;
-}
