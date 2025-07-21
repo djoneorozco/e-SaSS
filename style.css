@@ -1,6 +1,6 @@
-/* =============================
+/* ===========================
    GLOBAL RESET & BASE
-   ============================= */
+   =========================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,43 +21,26 @@ body {
   overflow-x: hidden;
 }
 
+/* ===========================
+   DARK MODE
+   =========================== */
 body.dark-mode {
   background: #131313;
   color: #f1f1f1;
 }
 
-/* =============================
-   TRANSITIONS
-   ============================= */
-.fade-in {
-  opacity: 0;
-  transform: translateY(40px);
-  pointer-events: none;
-  transition: opacity 250ms ease, transform 250ms ease;
+body.dark-mode form {
+  background: linear-gradient(to bottom, #222, #333);
+  color: #fff;
 }
 
-.fade-in.show {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: all;
+body.dark-mode .toggle-container {
+  color: #f1f1f1;
 }
 
-.fade-out {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: all;
-  transition: opacity 250ms ease, transform 250ms ease;
-}
-
-.fade-out.hide {
-  opacity: 0;
-  transform: translateY(-40px);
-  pointer-events: none;
-}
-
-/* =============================
+/* ===========================
    DARK/LIGHT MODE TOGGLE
-   ============================= */
+   =========================== */
 .toggle-container {
   position: fixed;
   top: 24px;
@@ -72,9 +55,9 @@ body.dark-mode .toggle-container {
   color: #fff;
 }
 
-/* =============================
+/* ===========================
    FORM CARD
-   ============================= */
+   =========================== */
 form {
   margin-top: 48px;
   background: linear-gradient(to bottom, #fff, #e7e4df);
@@ -96,6 +79,7 @@ body.dark-mode form {
   border: 1.5px solid #23242d;
 }
 
+/* Subtle animated bg swirl for card */
 form::after {
   content: "";
   position: absolute;
@@ -113,14 +97,9 @@ form::after {
   animation: swirlBG 60s linear infinite;
 }
 
-form > * {
-  position: relative;
-  z-index: 2;
-}
-
-/* =============================
+/* ===========================
    INPUTS/LABELS
-   ============================= */
+   =========================== */
 label {
   display: block;
   font-size: 14.5px;
@@ -176,10 +155,10 @@ body.dark-mode textarea:focus {
   color: #fff;
 }
 
-/* =============================
+/* ===========================
    PRIMARY BUTTON (Submit)
-   ============================= */
-button, .copy-btn, .return-btn {
+   =========================== */
+button, .copy-btn {
   display: block;
   width: 100%;
   padding: 15px;
@@ -196,14 +175,20 @@ button, .copy-btn, .return-btn {
   outline: none;
 }
 
-/* ========== COPY BUTTON ========== */
+button:hover, .copy-btn:hover {
+  background: linear-gradient(90deg, #ffd700 10%, #222 90%);
+  color: #222;
+  box-shadow: 0 0 28px #ffd70077;
+}
+
+/* ========== COPY BUTTON SPECIAL ========== */
 .copy-btn {
   max-width: 140px;
   width: auto;
   padding: 12px 20px;
   font-size: 1rem;
   border-radius: 16px;
-  margin: 18px 8px 8px 0;
+  margin: 18px 0 8px 0;
   float: right;
   position: relative;
   background: linear-gradient(90deg, #1c1c1c 65%, #353535 100%);
@@ -218,35 +203,9 @@ button, .copy-btn, .return-btn {
   box-shadow: 0 0 20px #ffd70077;
 }
 
-/* ========== RETURN BUTTON ========== */
-.return-btn {
-  max-width: 140px;
-  width: auto;
-  padding: 12px 20px;
-  font-size: 1rem;
-  border-radius: 16px;
-  margin: 6px 8px 22px 0;
-  float: right;
-  position: relative;
-  background: linear-gradient(90deg, #232323 30%, #757575 100%);
-  color: #dedede;
-  font-weight: 600;
-  opacity: 0.7;
-  box-shadow: 0 2px 12px rgba(32,32,32,0.10);
-  border: 1px solid #444;
-  transition: background 0.2s, color 0.17s, box-shadow 0.18s, opacity 0.25s;
-}
-
-.return-btn:hover {
-  background: linear-gradient(90deg, #666 0%, #222 100%);
-  color: #ffd700;
-  opacity: 1;
-  box-shadow: 0 0 10px #ffd70055;
-}
-
-/* =============================
+/* ===========================
    OUTPUT CARD (AI Email)
-   ============================= */
+   =========================== */
 #outputWrapper {
   display: none;
   width: 100%;
@@ -296,9 +255,9 @@ body.dark-mode #emailOutput {
   background: none;
 }
 
-/* =============================
+/* ===========================
    LENS EXPLANATION CARD
-   ============================= */
+   =========================== */
 #lensResults {
   display: none;
   margin: 0 auto 40px auto;
@@ -321,18 +280,7 @@ body.dark-mode #lensResults {
   border: 1.5px solid #2d2d35;
 }
 
-/* Lens Title/Headline */
-.lens-headline {
-  font-weight: 800;
-  color: #ffd700;
-  font-size: 1.17rem;
-  letter-spacing: 0.03em;
-  margin-bottom: 12px;
-  text-shadow: 0 1px 8px #ffd70030;
-  text-transform: uppercase;
-}
-
-/* Lens Section Title */
+/* Lens Title */
 .lens-title {
   font-weight: 800;
   color: #ffd700;
@@ -353,25 +301,25 @@ body.dark-mode #lensResults {
 
 /* ========== END Lens ========== */
 
-/* =============================
+/* ===========================
    ANIMATIONS
-   ============================= */
+   =========================== */
 @keyframes swirlBG {
   from { transform: rotate(0deg);}
   to   { transform: rotate(360deg);}
 }
 
-/* =============================
+/* ===========================
    RESPONSIVE
-   ============================= */
+   =========================== */
 @media (max-width: 980px) {
   #outputWrapper, .email-card, #lensResults {
     max-width: 98vw;
-    padding-left: 4vw !important;
-    padding-right: 4vw !important;
+    padding-left: 8vw !important;
+    padding-right: 8vw !important;
   }
   form {
-    padding: 36px 5vw 32px 5vw;
+    padding: 36px 10vw 32px 10vw;
     max-width: 99vw;
   }
 }
@@ -380,12 +328,27 @@ body.dark-mode #lensResults {
   form, #outputWrapper, #lensResults, .email-card {
     max-width: 100vw !important;
     border-radius: 12px !important;
-    padding: 12px 2vw !important;
+    padding: 12px 4vw !important;
   }
-  .copy-btn, .return-btn {
-    max-width: 90vw;
+  .copy-btn {
+    max-width: 80vw;
     padding: 11px 9vw;
     font-size: 0.93rem;
     margin: 9px 0 2px 0;
   }
+}
+
+/* ===========================
+   MISC
+   =========================== */
+::-webkit-scrollbar {
+  width: 7px;
+  background: #25252522;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e1e140;
+  border-radius: 12px;
+}
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #ffd70030;
 }
