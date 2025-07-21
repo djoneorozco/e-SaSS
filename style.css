@@ -1,190 +1,354 @@
-/* ========================================
-   LUXURY STYLE SHEET — e-SaSS V2
-   Fortune 500 | Stanford MBA | Apple-grade UI
-=========================================== */
-
-:root {
-  --primary: #4263eb;
-  --primary-dark: #3347c3;
-  --background: #f9f9f9;
-  --white: #ffffff;
-  --text: #111111;
-  --accent: #eaeaea;
-  --radius: 12px;
-  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  --font-header: 'Playfair Display', serif;
-  --font-body: 'Inter', sans-serif;
+/* ===========================
+   GLOBAL RESET & BASE
+   =========================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  font-family: var(--font-body);
-  background: var(--background);
-  color: var(--text);
-  line-height: 1.6;
+  font-family: 'Inter', sans-serif;
+  background: #d3cfc9;
+  color: #222;
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background 0.5s, color 0.5s;
+  overflow-x: hidden;
 }
 
-.site-title {
-  font-family: var(--font-header);
-  font-size: 2.8rem;
-  margin-bottom: 0.5rem;
-  color: var(--text);
+/* ===========================
+   DARK MODE
+   =========================== */
+body.dark-mode {
+  background: #131313;
+  color: #f1f1f1;
 }
 
-.tagline {
-  font-size: 1.1rem;
-  color: #555;
-  margin-bottom: 2rem;
+body.dark-mode form {
+  background: linear-gradient(to bottom, #222, #333);
+  color: #fff;
 }
 
-.quiz-container {
-  max-width: 700px;
-  margin: 3rem auto;
-  padding: 3rem 2rem;
-  background: var(--white);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
+body.dark-mode .toggle-container {
+  color: #f1f1f1;
 }
 
-.form-section {
-  margin-bottom: 2.5rem;
+/* ===========================
+   DARK/LIGHT MODE TOGGLE
+   =========================== */
+.toggle-container {
+  position: fixed;
+  top: 24px;
+  right: 34px;
+  font-size: 15px;
+  z-index: 20;
+  color: #111;
+  user-select: none;
 }
 
+body.dark-mode .toggle-container {
+  color: #fff;
+}
+
+/* ===========================
+   FORM CARD
+   =========================== */
+form {
+  margin-top: 48px;
+  background: linear-gradient(to bottom, #fff, #e7e4df);
+  border: 1px solid rgba(0, 0, 0, 0.09);
+  border-radius: 24px;
+  padding: 46px 36px 36px 36px;
+  max-width: 470px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+  backdrop-filter: blur(18px);
+  transition: all 0.4s;
+  position: relative;
+  z-index: 3;
+}
+
+body.dark-mode form {
+  background: linear-gradient(to bottom, #23242d 60%, #15151a 100%);
+  color: #fff;
+  border: 1.5px solid #23242d;
+}
+
+/* Subtle animated bg swirl for card */
+form::after {
+  content: "";
+  position: absolute;
+  top: -45%;
+  left: -45%;
+  width: 190%;
+  height: 190%;
+  background: url("/images/uploads/backgroundlayer.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: swirlBG 60s linear infinite;
+}
+
+/* ===========================
+   INPUTS/LABELS
+   =========================== */
 label {
   display: block;
-  margin-bottom: 0.5rem;
+  font-size: 14.5px;
   font-weight: 600;
+  margin-bottom: 7px;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+
+body.dark-mode label {
+  color: #ececec;
 }
 
 input[type="text"],
-input[type="file"],
+input[type="number"],
 select,
 textarea {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius);
-  font-size: 1rem;
-  margin-bottom: 1.5rem;
-  background: #fff;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
-  transition: border 0.2s ease;
+  padding: 12px 14px;
+  background: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.13);
+  border-radius: 12px;
+  font-size: 15px;
+  color: #111;
+  margin-bottom: 19px;
+  margin-top: 2px;
+  outline: none;
+  transition: all 0.25s;
 }
 
 input[type="text"]:focus,
+input[type="number"]:focus,
 select:focus,
 textarea:focus {
-  border-color: var(--primary);
+  background: rgba(0,0,0,0.07);
+  border-color: #9667ff;
+  color: #000;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background: rgba(255,255,255,0.09);
+  color: #fff;
+  border-color: rgba(255,255,255,0.19);
+}
+
+body.dark-mode input:focus,
+body.dark-mode select:focus,
+body.dark-mode textarea:focus {
+  background: rgba(255,255,255,0.13);
+  border-color: #c5aaff;
+  color: #fff;
+}
+
+/* ===========================
+   PRIMARY BUTTON (Submit)
+   =========================== */
+button, .copy-btn {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(90deg, #131313 60%, #2a2a2a 100%);
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  cursor: pointer;
+  margin: 18px 0 0 0;
+  box-shadow: 0 2px 14px rgba(32,32,32,0.17);
+  transition: background 0.25s, color 0.18s, box-shadow 0.25s;
   outline: none;
 }
 
-input[type="range"] {
-  width: 100%;
-  margin-top: 0.25rem;
-  margin-bottom: 1.2rem;
+button:hover, .copy-btn:hover {
+  background: linear-gradient(90deg, #ffd700 10%, #222 90%);
+  color: #222;
+  box-shadow: 0 0 28px #ffd70077;
 }
 
-button[type="submit"] {
-  width: 100%;
-  padding: 1rem;
+/* ========== COPY BUTTON SPECIAL ========== */
+.copy-btn {
+  max-width: 140px;
+  width: auto;
+  padding: 12px 20px;
   font-size: 1rem;
-  background: var(--primary);
-  color: var(--white);
-  border: none;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: background 0.3s ease;
-  font-weight: 600;
+  border-radius: 16px;
+  margin: 18px 0 8px 0;
+  float: right;
+  position: relative;
+  background: linear-gradient(90deg, #1c1c1c 65%, #353535 100%);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 2px 14px rgba(32,32,32,0.17);
 }
 
-button[type="submit"]:hover {
-  background: var(--primary-dark);
+.copy-btn:hover {
+  background: linear-gradient(90deg, #ffd700 10%, #222 90%);
+  color: #111;
+  box-shadow: 0 0 20px #ffd70077;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 100px;
+/* ===========================
+   OUTPUT CARD (AI Email)
+   =========================== */
+#outputWrapper {
+  display: none;
+  width: 100%;
+  max-width: 700px;
+  margin: 44px auto 0 auto;
+  z-index: 4;
 }
 
-.progress {
-  font-size: 0.95rem;
-  color: #333;
-  margin-top: 1rem;
-  font-style: italic;
+.email-card {
+  background: rgba(32,32,32,0.15);
+  border-radius: 24px;
+  box-shadow: 0 4px 24px rgba(40,40,40,0.18), 0 1.5px 24px #16161633;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(16px) saturate(1.25);
+  border: 1.5px solid rgba(36,36,36,0.17);
+  margin-bottom: 32px;
+  min-height: 190px;
 }
 
-.footer-note {
-  margin-top: 2rem;
-  font-size: 0.85rem;
-  text-align: center;
-  color: #888;
+body.dark-mode .email-card {
+  background: rgba(34, 34, 38, 0.7);
+  border: 1.5px solid #353545;
+  box-shadow: 0 4px 36px #111a, 0 0.7px 18px #ffd70013;
 }
 
-h2 {
-  font-size: 1.2rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-#gptOutputWrapper {
-  background: #fcfcfc;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  margin-top: 2rem;
-  box-shadow: var(--shadow);
-}
-
-.gpt-output {
+#emailOutput {
+  font-family: 'Menlo', 'Consolas', 'SF Mono', 'Roboto Mono', monospace;
+  font-size: 1.09rem;
   white-space: pre-wrap;
-  font-family: 'Courier New', monospace;
-  font-size: 0.95rem;
-  color: #333;
-  background-color: #fff;
-  padding: 1rem;
-  border-radius: var(--radius);
-  border: 1px solid #e0e0e0;
-  margin-top: 1rem;
+  word-break: break-word;
+  padding: 34px 36px 36px 36px;
+  border-radius: 18px;
+  background: none;
+  color: #15151a;
+  min-height: 170px;
+  max-height: 490px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  line-height: 1.6;
+  letter-spacing: 0.003em;
 }
 
-.copy-button {
-  display: inline-block;
-  margin-bottom: 0.5rem;
-  padding: 0.5rem 1rem;
-  font-size: 0.85rem;
-  background: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+body.dark-mode #emailOutput {
+  color: #f1f1f1;
+  background: none;
 }
 
-.copy-button:hover {
-  background: #e3e3e3;
+/* ===========================
+   LENS EXPLANATION CARD
+   =========================== */
+#lensResults {
+  display: none;
+  margin: 0 auto 40px auto;
+  width: 100%;
+  max-width: 700px;
+  background: rgba(30,30,30,0.30);
+  border-radius: 24px;
+  padding: 24px 36px 28px 36px;
+  box-shadow: 0 2.5px 28px rgba(34,34,34,0.19);
+  backdrop-filter: blur(12px) saturate(1.18);
+  border: 1.5px solid rgba(50,50,50,0.11);
+  font-size: 1.03rem;
+  color: #262631;
+  z-index: 5;
 }
 
-/* Checkbox Styling */
-input[type="checkbox"] {
-  margin-right: 0.5rem;
-  transform: scale(1.2);
+body.dark-mode #lensResults {
+  background: rgba(24,24,26,0.76);
+  color: #f6f4e5;
+  border: 1.5px solid #2d2d35;
 }
 
-/* Dropdown Styling */
-select {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3E%3Cpath fill='%23999' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 8px 10px;
+/* Lens Title */
+.lens-title {
+  font-weight: 800;
+  color: #ffd700;
+  font-size: 1.07rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 5px;
+  text-shadow: 0 1px 8px #ffd70030;
+  text-transform: uppercase;
 }
 
-/* Sliders Labels Inline */
-.slider-label {
-  display: flex;
-  justify-content: space-between;
-  margin-top: -0.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
-  color: #666;
+/* Lens Paragraph */
+.lens-explanation {
+  margin-bottom: 22px;
+  font-size: 1.01rem;
+  color: inherit;
+  line-height: 1.55;
+}
+
+/* ========== END Lens ========== */
+
+/* ===========================
+   ANIMATIONS
+   =========================== */
+@keyframes swirlBG {
+  from { transform: rotate(0deg);}
+  to   { transform: rotate(360deg);}
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 980px) {
+  #outputWrapper, .email-card, #lensResults {
+    max-width: 98vw;
+    padding-left: 8vw !important;
+    padding-right: 8vw !important;
+  }
+  form {
+    padding: 36px 10vw 32px 10vw;
+    max-width: 99vw;
+  }
+}
+
+@media (max-width: 600px) {
+  form, #outputWrapper, #lensResults, .email-card {
+    max-width: 100vw !important;
+    border-radius: 12px !important;
+    padding: 12px 4vw !important;
+  }
+  .copy-btn {
+    max-width: 80vw;
+    padding: 11px 9vw;
+    font-size: 0.93rem;
+    margin: 9px 0 2px 0;
+  }
+}
+
+/* ===========================
+   MISC
+   =========================== */
+::-webkit-scrollbar {
+  width: 7px;
+  background: #25252522;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e1e140;
+  border-radius: 12px;
+}
+body.dark-mode ::-webkit-scrollbar-thumb {
+  background: #ffd70030;
 }
