@@ -6,6 +6,24 @@
   <title>e-SaSS – Smart Email Engine</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .logo-wrapper {
+      text-align: center;
+      margin-bottom: 12px;
+      margin-top: 18px;
+    }
+    .main-logo {
+      width: 380px;
+      max-width: 96vw;
+      height: auto;
+      margin: 0 auto 0 auto;
+      filter: drop-shadow(0 4px 24px #ffd70066);
+      transition: filter 0.28s;
+    }
+    @media (max-width: 600px) {
+      .main-logo { width: 90vw; }
+    }
+  </style>
 </head>
 <body>
   <!-- 🌙 Dark Mode Toggle -->
@@ -14,6 +32,11 @@
       <input type="checkbox" id="themeToggle" />
       🌙 Dark Mode
     </label>
+  </div>
+
+  <!-- Logo (TOP OF FORM) -->
+  <div class="logo-wrapper">
+    <img src="images/e-SaSS.png" alt="e-SaSS Logo" class="main-logo" />
   </div>
 
   <!-- 💼 Form Card -->
