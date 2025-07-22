@@ -22,6 +22,29 @@ body {
 }
 
 /* ===========================
+   LOGO STYLING — ADDED
+   =========================== */
+.logo-wrapper {
+  width: 100%;
+  text-align: center;
+  margin: 32px 0 0 0;
+  z-index: 20;
+}
+.main-logo {
+  width: 380px;
+  max-width: 95vw;
+  height: auto;
+  filter: drop-shadow(0 4px 32px #ffd70088);
+  margin-bottom: 4px;
+  margin-top: 0;
+  transition: filter 0.28s;
+}
+@media (max-width: 600px) {
+  .main-logo { width: 95vw; }
+  .logo-wrapper { margin-top: 14px; }
+}
+
+/* ===========================
    DARK MODE
    =========================== */
 body.dark-mode {
@@ -141,7 +164,7 @@ textarea:focus {
 
 body.dark-mode input,
 body.dark-mode select,
-body.dark-mode textarea {
+body-dark-mode textarea {
   background: rgba(255,255,255,0.09);
   color: #fff;
   border-color: rgba(255,255,255,0.19);
@@ -149,7 +172,7 @@ body.dark-mode textarea {
 
 body.dark-mode input:focus,
 body.dark-mode select:focus,
-body.dark-mode textarea:focus {
+body-dark-mode textarea:focus {
   background: rgba(255,255,255,0.13);
   border-color: #c5aaff;
   color: #fff;
@@ -312,7 +335,7 @@ body.dark-mode #lensResults {
 /* ===========================
    RESPONSIVE
    =========================== */
-@media (max-width: 980px) {
+@media (max-width: 1200px) {
   #outputWrapper, .email-card, #lensResults {
     max-width: 98vw;
     padding-left: 8vw !important;
@@ -364,5 +387,5 @@ body.dark-mode ::-webkit-scrollbar-thumb {
 .fade-out {
   opacity: 0 !important;
   pointer-events: none;
-  transition: opacity 280ms cubic-bezier(.61,0,.45,1);
+  transition: opacity 480ms cubic-bezier(.61,0,.45,1);
 }
