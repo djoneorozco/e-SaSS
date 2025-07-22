@@ -21,6 +21,13 @@
       transition: filter 0.28s;
       display: block;
     }
+    /* Dark mode only: background for form */
+    body.dark-mode #eSaSSForm {
+      background: url('images/e-SaSS2.png') center 24px/contain no-repeat, linear-gradient(to bottom, #23242d 60%, #15151a 100%);
+      /* Adjust blend if needed for darkness: */
+      background-blend-mode: lighten, normal;
+      position: relative;
+    }
     @media (max-width: 600px) {
       .main-logo { width: 38vw; }
     }
@@ -147,26 +154,4 @@
   <!-- =================== -->
   <script>
     // Dark mode toggle
-    document.getElementById('themeToggle').addEventListener('change', function () {
-      document.body.classList.toggle('dark-mode');
-    });
-
-    // Lens toggle logic
-    document.getElementById('lensToggle').addEventListener('change', function () {
-      document.getElementById('lensControls').style.display =
-        this.checked ? 'block' : 'none';
-    });
-
-    // Copy email output
-    function copyEmailOutput() {
-      const text = document.getElementById('emailOutput').innerText;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = document.querySelector('.copy-btn');
-        btn.innerText = "Copied!";
-        setTimeout(() => (btn.innerText = "Copy All"), 1200);
-      });
-    }
-  </script>
-  <script type="module" src="main.js"></script>
-</body>
-</html>
+    document.getElementById('themeToggle').addEventListener('change',
