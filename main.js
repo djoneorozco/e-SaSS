@@ -45,6 +45,20 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========================
+  // #Fading Function
+  // ========================
+  function fadeToOutput() {
+    form.classList.add("fade-out");
+    setTimeout(() => {
+      form.style.display = "none";
+      outputWrapper.style.display = "block";
+      outputWrapper.classList.add("fade-in");
+      // Optional: Scroll to output
+      outputWrapper.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 280);
+  }
+
+  // ========================
   // #2: Main Form Submission
   // ========================
   form.addEventListener("submit", async (e) => {
@@ -137,6 +151,12 @@ Generate:
         `;
         lensResults.style.display = "block";
       }
+
+      // ===========================
+      // FADE TO OUTPUT (only change here!)
+      // ===========================
+      fadeToOutput();
+
     } catch (error) {
       console.error("Error generating email:", error);
       progress.innerText = "❌ Failed to generate. Try again.";
