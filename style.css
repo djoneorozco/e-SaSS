@@ -171,11 +171,104 @@ body-dark-mode textarea {
 }
 
 body.dark-mode input:focus,
-body.dark-mode select:focus,
+body-dark-mode select:focus,
 body-dark-mode textarea:focus {
   background: rgba(255,255,255,0.13);
   border-color: #c5aaff;
   color: #fff;
+}
+
+/* ===========================
+   NEON BLUE GLOWING SLIDER (ADDED)
+   =========================== */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 4px;
+  background: #181c2f;
+  border-radius: 2px;
+  outline: none;
+  box-shadow: 0 0 12px #41d6ff44;
+  transition: background 0.3s;
+  margin-bottom: 14px;
+}
+
+/* Track (bar) */
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: linear-gradient(90deg, #29f6ff 0%, #3b5bff 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 14px #2be2ff, 0 0 18px #3b5bff;
+}
+
+/* Thumb (handle) */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #29f6ff;
+  box-shadow:
+    0 0 6px #29f6ff,
+    0 0 18px #3b5bff,
+    0 0 32px #0ff;
+  border: 3px solid #181c2f;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: -8px;
+}
+input[type="range"]:hover::-webkit-slider-thumb,
+input[type="range"]:focus::-webkit-slider-thumb {
+  background: #41d6ff;
+  box-shadow:
+    0 0 14px #41d6ff,
+    0 0 24px #41d6ff,
+    0 0 48px #0ff;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: #29f6ff;
+  box-shadow:
+    0 0 6px #29f6ff,
+    0 0 18px #3b5bff,
+    0 0 32px #0ff;
+  border: 3px solid #181c2f;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+input[type="range"]:hover::-moz-range-thumb,
+input[type="range"]:focus::-moz-range-thumb {
+  background: #41d6ff;
+  box-shadow:
+    0 0 14px #41d6ff,
+    0 0 24px #41d6ff,
+    0 0 48px #0ff;
+}
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: linear-gradient(90deg, #29f6ff 0%, #3b5bff 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 14px #2be2ff, 0 0 18px #3b5bff;
+}
+input[type="range"]::-ms-fill-lower,
+input[type="range"]::-ms-fill-upper {
+  background: linear-gradient(90deg, #29f6ff 0%, #3b5bff 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 14px #2be2ff, 0 0 18px #3b5bff;
+}
+
+/* Remove focus outline */
+input[type="range"]:focus {
+  outline: none;
+}
+
+/* Hide original track in Edge/IE */
+input[type="range"]::-ms-tooltip {
+  display: none;
 }
 
 /* ===========================
