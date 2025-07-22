@@ -328,15 +328,15 @@ button:hover, .copy-btn:hover {
 
 .email-card {
   background: rgba(32,32,32,0.15);
-  border-radius: 16px;
+  border-radius: 12px;
   box-shadow: 0 4px 24px rgba(40,40,40,0.18), 0 1.5px 24px #16161633;
   padding: 0;
   overflow: hidden;
   position: relative;
   backdrop-filter: blur(16px) saturate(1.25);
-  border: 1.5px solid rgba(36,36,36,0.17);
+  border: 1.0px solid rgba(36,36,36,0.17);
   margin-bottom: 32px;
-  min-height: 190px;
+  min-height: 200px;
 }
 
 body.dark-mode .email-card {
