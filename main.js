@@ -1,6 +1,5 @@
 // ================================
-// # main.js — e-SaSS V2.99 Dynamic Lens Engine
-// # Fortune 500 | Ivy League Quality
+// # main.js — e-SaSS V2.99 Dynamic Lens Engine (Fortune 500 | Ivy League Quality)
 // ================================
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -53,7 +52,6 @@ window.addEventListener("DOMContentLoaded", () => {
       form.style.display = "none";
       outputWrapper.style.display = "block";
       outputWrapper.classList.add("fade-in");
-      // Optional: Scroll to output
       outputWrapper.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 280);
   }
@@ -91,36 +89,72 @@ window.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // # Construct Prompt for OpenAI
-    let prompt = `
-You are e-SaSS, an elite A.I. assistant trained in psychology, luxury real estate, business etiquette, and persuasive communication. Write TWO professionally crafted real estate emails using the parameters below. Your tone must reflect the sophistication of a Stanford MBA and a Harvard-trained real estate agent.
+    // # Calculate max word count
+    const wordCount = contextDepth * 50; // 1=50, 10=500
 
-Message Purpose: ${purpose}
-Recipient Type: ${audience}
-Tone (SaSS Level): ${sassLevel}/10
-Context Depth: ${contextDepth}/10
-Emoji/Slang Usage: ${emojiSlang}/10
-Context Provided: ${background || "No summary provided."}
-`;
-
-    if (file && file.name) {
-      prompt += `\nFile Uploaded: ${file.name}`;
+    // # Compose emoji/slang instructions
+    let emojiInstruction = "";
+    let slangInstruction = "";
+    if (emojiSlang === 0) {
+      emojiInstruction = "Do NOT use any emojis in the email.";
+      slangInstruction = "Do NOT use any slang, abbreviations, or misspellings.";
+    } else {
+      emojiInstruction = `Use up to ${Math.round(emojiSlang * 0.5)} emojis, spaced naturally in the email.`; // 10=5 emojis
+      slangInstruction = emojiSlang < 4
+        ? "Use very little or no slang or abbreviations."
+        : emojiSlang < 7
+        ? "Use some casual phrasing and a few modern terms, but stay professional."
+        : "Use a strong amount of friendly slang, modern abbreviations, and casual phrases."
     }
+
+    // # Tone
+    let toneInstruction = "";
+    if (sassLevel >= 8) {
+      toneInstruction = "The tone must be extremely formal, direct, and polished, as if written by a lawyer or for a boardroom audience.";
+    } else if (sassLevel >= 6) {
+      toneInstruction = "The tone should be professional, polished, and businesslike, but not stiff.";
+    } else if (sassLevel >= 4) {
+      toneInstruction = "Use a balanced tone: friendly, warm, and approachable while maintaining professionalism.";
+    } else if (sassLevel >= 2) {
+      toneInstruction = "Use a casual, upbeat, and conversational tone as if writing to a friend or favorite client.";
+    } else {
+      toneInstruction = "Write as if you are chatting with a close friend; use gossip, banter, and maximum warmth.";
+    }
+
+    // # Compose Prompt for OpenAI
+    let prompt = `
+You are e-SaSS, a Fortune 500-level A.I. assistant for realtors. Write TWO real estate email scripts based on the sliders below. Each script should reflect the desired tone, length, and emoji/slang level — and be tailored to the user's input.
+
+Sliders Chosen:
+- SaSS Level (Tone): ${sassLevel}/10 (${toneInstruction})
+- Context Depth: ${contextDepth}/10 (Word Count Target: ${wordCount})
+- Emoji/Slang Level: ${emojiSlang}/10 (${emojiInstruction} ${slangInstruction})
+
+Additional Context:
+- Purpose: ${purpose}
+- Audience: ${audience}
+- Scenario: ${background || "No summary provided."}
+${file && file.name ? "- File uploaded: " + file.name : ""}
+
+== Instructions for e-SaSS AI ==
+1. STRICTLY limit each email to about ${wordCount} words (±10% is okay).
+2. For emoji/slang: Emoji: ${emojiSlang}/10. Slang: ${emojiSlang}/10. ${emojiInstruction} ${slangInstruction}
+3. For tone: SaSS Level ${sassLevel}/10. ${toneInstruction}
+4. Do NOT explain the slider choices in the email output.
+5. Return ONLY the emails.
+6. Each script must be different (e.g., approach, hook, closing).
+`;
 
     if (useLenses) {
       prompt += `
-Psychology Lens: ${psychology}/10
-Business Lens: ${business}/10
-Insight Depth: ${technical}/10
+(For reference, the user has also enabled these additional communication 'lenses': 
+Psychology Lens: ${psychology}/10, Business Lens: ${business}/10, Insight Depth: ${technical}/10)
 `;
     }
 
+    // Add generation instructions at the end
     prompt += `
-Generate:
-- Two distinct email scripts (under 500 words each)
-- Each should include a compelling tone and tailored strategy
-- Below each email, add a short breakdown explaining the writing style or persuasion logic
-- Write with clarity, empathy, authority, and polish
+Write TWO emails, separated clearly.
 `;
 
     // # Call OpenAI Function
@@ -142,6 +176,12 @@ Generate:
       // # Render Dynamic Lens Explanations (if enabled)
       if (useLenses) {
         lensResults.innerHTML = `
+          <div class="lens-title">e-SaSS Smart Insights</div>
+          <div style="margin-bottom:16px;">
+            <b>SaSS Level (Tone):</b> ${sassLevel}/10<br>
+            <b>Context Depth:</b> ${contextDepth}/10 (${wordCount} words)<br>
+            <b>Emoji/Slang:</b> ${emojiSlang}/10
+          </div>
           <div class="lens-title">Psychology Lens (${psychology}/10)</div>
           <div class="lens-explanation">${getPsychologyExplanation(psychology)}</div>
           <div class="lens-title">Business Lens (${business}/10)</div>
