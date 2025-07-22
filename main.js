@@ -16,39 +16,65 @@ window.addEventListener("DOMContentLoaded", () => {
     lensControls.style.display = this.checked ? 'block' : 'none';
   });
 
-  // Fortune 500-level explanations (unchanged)
-  function getPsychologyExplanation(level) { /* ...same as before... */ }
-  function getBusinessExplanation(level) { /* ...same as before... */ }
-  function getInsightExplanation(level) { /* ...same as before... */ }
+  // ========================================
+  // Lens Explanations (Fortune 500 style)
+  // ========================================
+  function getPsychologyExplanation(level) {
+    if (level <= 2) return "Psychology: Highly relatable, warm, and human—message feels like a peer or close friend, fostering instant trust and comfort.";
+    if (level <= 4) return "Psychology: Balanced warmth and professionalism—shows friendly cues but also builds subtle credibility and trust triggers.";
+    if (level <= 7) return "Psychology: Professional rapport—blends respectful distance with clear relationship-building and persuasive undertones.";
+    if (level <= 9) return "Psychology: Executive presence—carefully managed emotion, status cues, and strategic warmth to influence high-value audiences.";
+    return "Psychology: Elite-level persuasion—maximum trust, status, and urgency using advanced behavioral triggers seen in luxury sales.";
+  }
+  function getBusinessExplanation(level) {
+    if (level <= 2) return "Business: Simple, direct value—minimal justification, focus on basic benefit or need.";
+    if (level <= 4) return "Business: Adds clear value and ROI framing—shows recipient why the message is useful or profitable.";
+    if (level <= 7) return "Business: Professional, MBA-style business case—uses subtle business logic, opportunity, and scarcity cues.";
+    if (level <= 9) return "Business: Boardroom style—leverages exclusivity, competitive proof, and sophisticated profit logic.";
+    return "Business: Fortune 500–grade strategy—delivers risk management, differentiation, and premium value in every sentence.";
+  }
+  function getInsightExplanation(level) {
+    if (level <= 2) return "Insight: Quick takeaway—basic, actionable advice or insight with no jargon.";
+    if (level <= 4) return "Insight: Credibility via data—drops in a relevant stat or proof to support points.";
+    if (level <= 7) return "Insight: Targeted, relevant—uses local trends or a real example to strengthen the message.";
+    if (level <= 9) return "Insight: Cites research or MBA logic—logic is always backed by strong rationale or best practices.";
+    return "Insight: Research-grade—ties in academic/industry studies and frameworks for elite, premium trust.";
+  }
 
-  // Helper: Map slider values to actual instructions
+  // ========================================
+  // Slider Logic: Composite Value Mapping
+  // ========================================
   function sassToneInstruction(level) {
     // 1 = extremely casual/gossip, 10 = lawyer/formal
-    if (level <= 2) return "Very casual, like texting a friend or fun gossip. Use friendly, approachable language.";
-    if (level <= 4) return "Casual-professional, relaxed tone, like a familiar colleague.";
-    if (level <= 7) return "Neutral-professional, balanced tone, businesslike but approachable.";
-    if (level <= 9) return "Formal, like a high-level business email.";
-    return "Extremely formal, polished, legal tone, as if written by an attorney for a Fortune 500 CEO.";
+    if (level <= 2) return "Extremely casual, warm, direct—like texting a friend. Uses open, transparent language and clear intent.";
+    if (level <= 4) return "Casual-professional, with visible relationship warmth and honesty. Slightly informal and approachable.";
+    if (level <= 7) return "Balanced business tone—respectful, moderately warm, with polite transparency. Suitable for standard client communication.";
+    if (level <= 9) return "Highly professional, formal, measured. Subtle warmth but maintains corporate distance and strategic clarity.";
+    return "Top-level formality, maximum diplomacy and polish, fully compliant with executive etiquette. No slang, emotionally reserved, legal-grade clarity.";
+  }
+
+  function contextDepthInstruction(level) {
+    // 1 = 50 words (low detail/urgency/follow-up), 10 = 500 words (high detail/urgency/follow-up)
+    if (level <= 2) return "50 words. Minimal context, very brief, no urgency or follow-up.";
+    if (level <= 4) return "150 words. Short, simple, with a gentle request for follow-up only if needed.";
+    if (level <= 7) return "300 words. Standard detail with clear next steps or light urgency cues—ask for a meeting if appropriate.";
+    if (level <= 9) return "400 words. High detail, specific requests, urgent tone, and an explicit follow-up or meeting ask.";
+    return "500 words. Maximum detail, full scenario, strong urgency, and very clear demand for prompt action or scheduled follow-up.";
   }
 
   function emojiSlangInstruction(level) {
     // 0 = no emoji/slang, 10 = max emoji/slang (about 5 per email)
-    if (level === 0) return "Do not use any emojis or slang/abbreviations.";
-    if (level <= 2) return "Maybe 1 emoji, minimal slang.";
-    if (level <= 4) return "Up to 2 emojis, occasional light slang.";
-    if (level <= 7) return "Use up to 3 emojis, friendly abbreviations and a bit of modern slang where it fits.";
-    if (level <= 9) return "Use up to 4 emojis and common slang/abbreviations (Insta, LOL, etc.) naturally.";
-    return "Use up to 5 emojis, and plenty of playful slang and abbreviations throughout.";
+    if (level === 0) return "No emojis or slang, strictly professional, zero expressiveness or special formatting.";
+    if (level <= 2) return "1 emoji max, only where it feels natural. No abbreviations or slang. Tone stays formal.";
+    if (level <= 4) return "Up to 2 emojis, occasional friendly expressions. Some light, business-appropriate abbreviations.";
+    if (level <= 7) return "Up to 3 emojis, playful energy, some bold/italic formatting for emotional emphasis. Common abbreviations (Insta, LOL, etc.) are allowed.";
+    if (level <= 9) return "Up to 4 emojis, frequent slang and abbreviations, highly expressive, and clear use of bold/italic for excitement or emotion.";
+    return "Up to 5 emojis, maximum playful language, bold/italic phrases throughout, and heavy use of trending slang and abbreviations. Message feels energetic, relatable, and hyper-expressive.";
   }
 
-  function contextDepthInstruction(level) {
-    // 1 = 50 words, 10 = 500 words (increments of 50)
-    return `${level * 50}`;
-  }
-
-  // ========================
-  // #2: Main Form Submission
-  // ========================
+  // ========================================
+  // Main Form Submission: Prompt Engineering
+  // ========================================
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     output.innerHTML = "";
@@ -79,8 +105,7 @@ window.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // ====== Fortune 500 Premium Prompt Construction ======
-    // Map sliders → explicit values
+    // ==== Premium OpenAI Prompt Construction ====
     const wordCount = contextDepthInstruction(contextDepth);
     const sassInstruction = sassToneInstruction(sassLevel);
     const emojiInstruction = emojiSlangInstruction(emojiSlang);
@@ -92,7 +117,7 @@ You are e-SaSS, a Fortune 500–quality AI writing coach for luxury real estate 
 - Address this Purpose: ${purpose}
 - For this Audience: ${audience}
 - Use this Tone: ${sassInstruction}
-- Approximate Length: ${wordCount} words
+- Approximate Length: ${wordCount}
 - Emoji/Slang Guidance: ${emojiInstruction}
 - Base all content on this Context: "${background || "No scenario provided."}"
 ${file && file.name ? "- Also consider the uploaded file: " + file.name : ""}
@@ -134,7 +159,7 @@ ${file && file.name ? "- Also consider the uploaded file: " + file.name : ""}
       outputWrapper.style.display = "block";
       progress.innerText = "✨ Your Fortune 500 email is ready!";
 
-      // Lens Explanations
+      // Lens Explanations (Only if toggled)
       if (useLenses) {
         lensResults.innerHTML = `
           <div class="lens-title">Psychology Lens (${psychology}/10)</div>
@@ -144,12 +169,13 @@ ${file && file.name ? "- Also consider the uploaded file: " + file.name : ""}
           <div class="lens-title">Insight Lens (${technical}/10)</div>
           <div class="lens-explanation">${getInsightExplanation(technical)}</div>
           <div style="margin-top:18px; font-size:12px; opacity:0.8;">
-            <strong>AI received explicit instructions:</strong><br>
+            <strong>AI Instructions (for your insight):</strong><br>
             <ul>
-              <li>SaSS Tone: ${sassInstruction}</li>
-              <li>Word Count: ${wordCount}</li>
-              <li>Emoji/Slang: ${emojiInstruction}</li>
+              <li><b>SaSS Tone:</b> ${sassInstruction}</li>
+              <li><b>Context Depth:</b> ${wordCount}</li>
+              <li><b>Emoji/Slang:</b> ${emojiInstruction}</li>
             </ul>
+            <span style="display:block;margin-top:8px;">These settings determined the style and persuasive logic in your emails above. Try different slider combos to see how your client relationships change!</span>
           </div>
         `;
         lensResults.style.display = "block";
