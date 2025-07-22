@@ -52,15 +52,11 @@ body.dark-mode {
   color: #f1f1f1;
 }
 
-/* --- DARK MODE FORM w/ BACKGROUND IMAGE (ADDED) --- */
 body.dark-mode form {
-  background: url("images/e-SaSS2.png") center 32px/80% no-repeat, linear-gradient(to bottom, #23242d 60%, #15151a 100%);
+  background: linear-gradient(to bottom, #222, #333);
   color: #fff;
-  border: 1.5px solid #23242d;
-  /* You can adjust background-size/position as needed for best effect! */
 }
 
-/* Existing (for light mode) */
 body.dark-mode .toggle-container {
   color: #f1f1f1;
 }
@@ -98,6 +94,12 @@ form {
   transition: all 0.4s;
   position: relative;
   z-index: 3;
+}
+
+body.dark-mode form {
+  background: linear-gradient(to bottom, #23242d 60%, #15151a 100%);
+  color: #fff;
+  border: 1.5px solid #23242d;
 }
 
 /* Subtle animated bg swirl for card */
