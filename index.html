@@ -41,7 +41,7 @@
       <img id="mainLogo" src="images/e-SaSS.png" alt="e-SaSS Logo" class="main-logo" />
     </div>
     <h2>Your IVY E-mail Generatorr</h2>
-    <p>Let IVY craft your perfect real estate message—<span style="font-weight:600;">tailored for you</span>.</p>
+    <p>Let us craft your perfect real estate messag—<span style="font-weight:600;">tailored for your needs</span>.</p>
 
     <!-- Purpose Dropdown -->
     <label for="purpose">Purpose of Message</label>
@@ -154,7 +154,7 @@
       document.body.classList.toggle('dark-mode');
       // Swap logo source based on mode
       if (document.body.classList.contains('dark-mode')) {
-        mainLogo.src = 'images/e-SaSS2.png'; // Dark mode logo
+        mainLogo.src = 'images/e-SaSS.png'; // Dark mode logo
       } else {
         mainLogo.src = 'images/e-SaSS.png';  // Light mode logo
       }
@@ -163,7 +163,7 @@
     // On page load, match logo to current mode (in case of refresh or system dark mode)
     window.addEventListener('DOMContentLoaded', function () {
       if (document.body.classList.contains('dark-mode')) {
-        mainLogo.src = 'images/e-SaSS2.png';
+        mainLogo.src = 'images/e-SaSS.png';
       } else {
         mainLogo.src = 'images/e-SaSS.png';
       }
