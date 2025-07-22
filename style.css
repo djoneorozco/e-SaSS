@@ -352,3 +352,17 @@ body.dark-mode #lensResults {
 body.dark-mode ::-webkit-scrollbar-thumb {
   background: #ffd70030;
 }
+
+/* ===========================
+   FADE ANIMATIONS — ONLY ADDITION!
+   =========================== */
+.fade-in {
+  opacity: 1 !important;
+  pointer-events: auto;
+  transition: opacity 280ms cubic-bezier(.61,0,.45,1);
+}
+.fade-out {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 280ms cubic-bezier(.61,0,.45,1);
+}
