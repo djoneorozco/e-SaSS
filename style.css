@@ -31,7 +31,7 @@ body {
   z-index: 20;
 }
 .main-logo {
-  width: 380px;
+  width: 300px;
   max-width: 95vw;
   height: auto;
   filter: drop-shadow(0 4px 32px #ffd70088);
@@ -39,7 +39,7 @@ body {
   margin-top: 0;
   transition: filter 0.28s;
 }
-@media (max-width: 600px) {
+@media (max-width: 500px) {
   .main-logo { width: 95vw; }
   .logo-wrapper { margin-top: 14px; }
 }
@@ -188,9 +188,9 @@ input[type="range"] {
   background: #181c2f;
   border-radius: 2px;
   outline: none;
-  box-shadow: 0 0 12px #41d6ff44;
+  box-shadow: 0 0 6px #41d6ff44;
   transition: background 0.3s;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 /* Track (bar) */
@@ -233,8 +233,8 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: #29f6ff;
   box-shadow:
-    0 0 6px #29f6ff,
-    0 0 18px #3b5bff,
+    0 0 6px #279ee3,
+    0 0 18px #162bc7,
     0 0 32px #0ff;
   border: 3px solid #181c2f;
   cursor: pointer;
@@ -244,15 +244,15 @@ input[type="range"]:hover::-moz-range-thumb,
 input[type="range"]:focus::-moz-range-thumb {
   background: #41d6ff;
   box-shadow:
-    0 0 14px #41d6ff,
-    0 0 24px #41d6ff,
+    0 0 14px #416dff,
+    0 0 24px #416dff,
     0 0 48px #0ff;
 }
 input[type="range"]::-moz-range-track {
   height: 4px;
   background: linear-gradient(90deg, #29f6ff 0%, #3b5bff 100%);
   border-radius: 2px;
-  box-shadow: 0 0 14px #2be2ff, 0 0 18px #3b5bff;
+  box-shadow: 0 0 12px #2be2ff, 0 0 16px #3b5bff;
 }
 input[type="range"]::-ms-fill-lower,
 input[type="range"]::-ms-fill-upper {
